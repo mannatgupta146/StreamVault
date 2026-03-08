@@ -1,0 +1,109 @@
+@use '../styles/main.scss' as *;
+
+.hero-banner {
+  height: 80vh;
+  min-height: 600px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  color: $text-primary;
+  display: flex;
+  align-items: center;
+
+  .hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      90deg,
+      rgba(11, 12, 16, 0.9) 0%,
+      rgba(11, 12, 16, 0.4) 50%,
+      rgba(11, 12, 16, 0.1) 100%
+    );
+    z-index: 1;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    margin-left: 4rem;
+    max-width: 600px;
+
+    .hero-title {
+      font-size: 4rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      line-height: 1.1;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+    }
+
+    .hero-description {
+      font-size: 1.2rem;
+      line-height: 1.5;
+      margin-bottom: 2rem;
+      color: $text-secondary;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+
+      .btn {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.8rem 1.5rem;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+
+        &.btn-play {
+          background-color: $text-primary;
+          color: $bg-color;
+
+          &:hover {
+            background-color: rgba(255, 255, 255, 0.8);
+          }
+        }
+
+        &.btn-info {
+          background-color: rgba(11, 12, 16, 0.6);
+          color: $text-primary;
+          border: 1px solid rgba(255, 255, 255, 0.3);
+
+          &:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: $text-primary;
+          }
+        }
+      }
+    }
+  }
+
+  .hero-fade-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 150px;
+    background: linear-gradient(
+      180deg,
+      transparent,
+      rgba(11, 12, 16, 0.61),
+      $bg-color
+    );
+    z-index: 1;
+  }
+
+  @media (max-width: 768px) {
+    .hero-content {
+      margin-left: 2rem;
+      .hero-title { font-size: 2.5rem; }
+      .hero-description { font-size: 1rem; }
+    }
+  }
+}

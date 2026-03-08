@@ -1,0 +1,77 @@
+@use '../styles/main.scss' as *;
+
+.movie-row {
+  margin: 2rem 0;
+  padding: 0 2rem;
+  color: $text-primary;
+
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    text-transform: capitalize;
+  }
+
+  .slider-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    .slider-arrow {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 50px;
+      z-index: 20;
+      background: rgba(0, 0, 0, 0.5);
+      color: $text-primary;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      transition: all 0.3s ease;
+      cursor: pointer;
+
+      &:hover {
+        background: rgba(0, 0, 0, 0.8);
+        color: $accent-neon-blue;
+      }
+
+      &.left {
+        left: 0;
+      }
+
+      &.right {
+        right: 0;
+      }
+    }
+
+    &:hover .slider-arrow {
+      opacity: 1;
+    }
+
+    .row-posters {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 20px 0;
+      scroll-behavior: smooth;
+      
+      &::-webkit-scrollbar {
+        display: none;
+      }
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 0 1rem;
+    
+    .slider-arrow {
+      display: none;
+    }
+  }
+}
+

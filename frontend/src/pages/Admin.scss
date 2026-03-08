@@ -1,0 +1,254 @@
+@use '../styles/main.scss' as *;
+
+.admin-page {
+  padding-top: 100px;
+  padding-left: 4rem;
+  padding-right: 4rem;
+
+  .admin-header {
+    margin-bottom: 3rem;
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(45deg, $accent-neon-blue, $accent-neon-purple);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    p {
+      color: $text-secondary;
+    }
+  }
+
+  .admin-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+
+    .admin-card {
+      @include glassmorphism;
+      padding: 2rem;
+      border-radius: 8px;
+
+      h2 {
+        margin-bottom: 1.5rem;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        padding-bottom: 0.5rem;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+
+        .form-group {
+          width: 100%;
+          &.dual {
+            display: flex;
+            gap: 1rem;
+          }
+        }
+
+        input, textarea, select {
+          width: 100%;
+          padding: 1rem;
+          background: rgba(0,0,0,0.5);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          color: $text-primary;
+          border-radius: 4px;
+          outline: none;
+
+          &:focus {
+            border-color: $accent-neon-blue;
+          }
+        }
+
+        textarea {
+          min-height: 100px;
+          resize: vertical;
+        }
+
+        .form-actions {
+          display: flex;
+          gap: 1rem;
+          margin-top: 1rem;
+
+          button {
+            flex: 1;
+            padding: 1rem;
+            font-weight: 700;
+            border-radius: 4px;
+          }
+
+          .btn-submit {
+            background: $accent-neon-blue;
+            color: $bg-color;
+          }
+
+          .btn-cancel {
+            background: rgba(255, 255, 255, 0.1);
+            color: $text-primary;
+          }
+        }
+      }
+
+      .admin-items {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+
+        .admin-item {
+          @include flex-between;
+          padding: 1rem;
+          background: rgba(0,0,0,0.3);
+          border-radius: 4px;
+
+          .item-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+            
+            span {
+              font-size: 0.8rem;
+              color: $accent-neon-purple;
+            }
+          }
+
+          .item-actions {
+            display: flex;
+            gap: 0.5rem;
+
+            button {
+              padding: 0.5rem 1rem;
+              border-radius: 4px;
+              font-size: 0.9rem;
+            }
+
+            .btn-edit {
+              background: rgba(102, 252, 241, 0.2);
+              color: $accent-neon-blue;
+              
+              &:hover {
+                background: $accent-neon-blue;
+                color: $bg-color;
+              }
+            }
+
+            .btn-delete {
+              background: rgba(255, 0, 0, 0.2);
+              color: #ff4d4d;
+              
+              &:hover {
+                background: #ff4d4d;
+                color: #fff;
+              }
+            }
+          }
+        }
+      }
+
+      &.user-list {
+        overflow-x: auto;
+
+        .users-table {
+          width: 100%;
+          border-collapse: collapse;
+          margin-top: 1rem;
+
+          th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+          }
+
+          th {
+            font-weight: 600;
+            color: $text-secondary;
+          }
+
+          tr.banned-row {
+            opacity: 0.6;
+            background: rgba(255, 0, 0, 0.05);
+          }
+
+          .badge {
+            padding: 0.3rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+
+            &.admin {
+              background: rgba(155, 89, 182, 0.2);
+              color: $accent-neon-purple;
+            }
+            &.user {
+              background: rgba(255, 255, 255, 0.1);
+              color: $text-primary;
+            }
+          }
+
+          .status-banned {
+            color: #ff4d4d;
+            font-weight: 600;
+          }
+
+          .status-active {
+            color: #46d369;
+            font-weight: 600;
+          }
+
+          .table-actions {
+            display: flex;
+            gap: 0.5rem;
+
+            button {
+              padding: 0.4rem 0.8rem;
+              border-radius: 4px;
+              font-size: 0.8rem;
+              font-weight: 600;
+            }
+
+            .btn-ban {
+              background: rgba(255, 165, 0, 0.2);
+              color: orange;
+
+              &:hover {
+                background: orange;
+                color: #fff;
+              }
+
+              &.unban {
+                background: rgba(70, 211, 105, 0.2);
+                color: #46d369;
+
+                &:hover {
+                  background: #46d369;
+                  color: #fff;
+                }
+              }
+            }
+
+            .btn-delete {
+              background: rgba(255, 0, 0, 0.2);
+              color: #ff4d4d;
+              
+              &:hover {
+                background: #ff4d4d;
+                color: #fff;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @media (max-width: 900px) {
+    padding-left: 2rem;
+    padding-right: 2rem;
+
+    .admin-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+}

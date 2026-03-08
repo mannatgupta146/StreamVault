@@ -1,0 +1,34 @@
+@use '../styles/main.scss' as *;
+
+.loader-container {
+  padding: 0 4rem;
+  margin: 3rem 0;
+
+  .skeleton-title {
+    width: 200px;
+    height: 30px;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+  }
+
+  .skeleton-row {
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: hidden;
+
+    .skeleton-card {
+      min-width: 200px;
+      height: 300px;
+      border-radius: 8px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 0 1rem;
+    
+    .skeleton-card {
+      min-width: 140px;
+      height: 210px;
+    }
+  }
+}

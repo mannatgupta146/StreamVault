@@ -1,0 +1,105 @@
+@use '../styles/main.scss' as *;
+
+.navbar {
+  @include flex-between;
+  padding: 1.5rem 4rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  transition: all 0.3s ease;
+  background: transparent;
+
+  &.scrolled {
+    @include glassmorphism;
+    padding: 1rem 4rem;
+  }
+
+  .navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+
+    .navbar-logo {
+      .logo-text {
+        font-size: 1.8rem;
+        font-weight: 800;
+        background: linear-gradient(45deg, $accent-neon-blue, $accent-neon-purple);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+    }
+
+    .navbar-links {
+      display: flex;
+      gap: 1.5rem;
+
+      li a {
+        color: $text-secondary;
+        font-weight: 500;
+        transition: color 0.3s ease;
+        font-size: 0.95rem;
+
+        &:hover, &.active {
+          color: $text-primary;
+        }
+      }
+    }
+  }
+
+  .navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+
+    .icon {
+      color: $text-secondary;
+      cursor: pointer;
+      transition: color 0.3s ease;
+
+      &:hover {
+        color: $text-primary;
+      }
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 0.5rem 1rem;
+      gap: 0.5rem;
+
+      input {
+        background: transparent;
+        border: none;
+        color: $text-primary;
+        outline: none;
+        width: 200px;
+        transition: width 0.3s ease;
+
+        &::placeholder {
+          color: rgba(255, 255, 255, 0.5);
+        }
+
+        &:focus {
+          width: 250px;
+        }
+      }
+    }
+
+    .user-profile {
+      cursor: pointer;
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 1rem 2rem;
+    
+    .navbar-links, .search-bar input {
+      display: none;
+    }
+  }
+}

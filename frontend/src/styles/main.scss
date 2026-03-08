@@ -1,0 +1,55 @@
+$bg-color: #0b0c10;
+$card-bg: #1f2833;
+$text-primary: #ffffff;
+$text-secondary: #c5c6c7;
+$accent-neon-blue: #66fcf1;
+$accent-neon-purple: #9b59b6;
+$border-color: rgba(255, 255, 255, 0.1);
+
+@mixin glassmorphism {
+  background: rgba(11, 12, 16, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', 'Roboto', sans-serif;
+  background-color: $bg-color;
+  color: $text-primary;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
