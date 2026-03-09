@@ -72,7 +72,7 @@ const WatchHistory = () => {
                   padding: "0.4rem 0.8rem",
                   fontWeight: 600,
                   cursor: "pointer",
-                  zIndex: 2,
+                  zIndex: 30,
                   boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
                 }}
                 title="Remove from history"
