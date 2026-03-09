@@ -52,7 +52,7 @@ const Login = () => {
               id="email"
               name="email"
               value={email}
-              placeholder="Email or phone number"
+              placeholder="Email Address"
               onChange={onChange}
               required
             />
