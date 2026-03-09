@@ -3,6 +3,10 @@
     {
       "source": "/api/:path*",
       "destination": "https://streamvault-7m3k.onrender.com/api/:path*"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ],
   "headers": [
