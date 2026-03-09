@@ -20,7 +20,7 @@ export const likeMovie = createAsyncThunk(
   async (movieData, thunkAPI) => {
     // Optionally, persist to backend here
     return movieData.tmdb_id
-  }
+  },
 )
 
 export const unlikeMovie = createAsyncThunk(
@@ -28,7 +28,7 @@ export const unlikeMovie = createAsyncThunk(
   async (tmdbId, thunkAPI) => {
     // Optionally, persist to backend here
     return tmdbId
-  }
+  },
 )
 
 // Favorites

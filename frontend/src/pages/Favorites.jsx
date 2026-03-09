@@ -34,6 +34,8 @@ const Favorites = () => {
     )
   }
 
+  // Debug: log favorites array to help trace error
+  console.log("Favorites array:", favorites)
   return (
     <div
       className="page fade-in"
@@ -50,11 +52,13 @@ const Favorites = () => {
             gap: "2rem",
           }}
         >
-          {favorites.map((movie) => (
-            <div key={movie.tmdb_id || movie._id}>
-              <MovieCard movie={movie} />
-            </div>
-          ))}
+          {favorites
+            .filter((movie) => movie && typeof movie.tmdb_id === "number")
+            .map((movie) => (
+              <div key={movie.tmdb_id}>
+                <MovieCard movie={movie} />
+              </div>
+            ))}
         </div>
       ) : (
         <p>You haven't added any favorites yet!</p>
