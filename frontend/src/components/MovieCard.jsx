@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom"
 import {
   addFavorite,
   removeFavorite,
+  likeMovie,
+  unlikeMovie,
 } from "../features/interactions/interactionsSlice"
 import TrailerModal from "./TrailerModal"
 import "./MovieCard.scss"
@@ -15,57 +17,56 @@ const MovieCard = ({ movie, isLargeRow }) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { user } = useSelector((state) => state.auth)
-  const { favorites } = useSelector((state) => state.interactions)
-
-  const imgBaseUrl = "https://image.tmdb.org/t/p/w500"
-  // fallback placeholders
-  const backupImg = "https://via.placeholder.com/500x750?text=No+Poster"
+  const { favorites, liked } = useSelector((state) => state.interactions)
 
   if (!movie) return null
 
   // Support both TMDB movies (id) and backend favorites (tmdb_id)
   const movieTmdbId = movie.id || movie.tmdb_id
+  const isLiked = liked && liked.includes(movieTmdbId)
+
+  const imgBaseUrl = "https://image.tmdb.org/t/p/w500"
+  // fallback placeholders
+  const backupImg = "https://via.placeholder.com/500x750?text=No+Poster"
   const imagePath = isLargeRow ? movie.poster_path : movie.backdrop_path
+
+
   const imageUrl = imagePath
     ? typeof imagePath === "string" && imagePath.startsWith("http")
       ? imagePath
       : `${imgBaseUrl}${imagePath}`
     : backupImg
+
   const title = movie.title || movie.name || movie.original_name || "Untitled"
 
-  const isFavorited = favorites.some((fav) => fav.tmdb_id === movieTmdbId)
-
-  const handleFavoriteToggle = (e) => {
+  const handleLikeToggle = (e) => {
     e.stopPropagation()
     if (!user) return
-    if (isFavorited) {
-      dispatch(removeFavorite(movieTmdbId))
+    if (isLiked) {
+      dispatch(unlikeMovie(movieTmdbId))
     } else {
-      dispatch(
-        addFavorite({
-          tmdb_id: movieTmdbId,
-          title: movie.title,
-          name: movie.name,
-          poster_path: movie.poster_path,
-          backdrop_path: movie.backdrop_path,
-          overview: movie.overview,
-          vote_average: movie.vote_average,
-          release_date: movie.release_date || movie.first_air_date,
-          media_type: movie.media_type,
-        }),
-      )
+      dispatch(likeMovie({
+        tmdb_id: movieTmdbId,
+        title: movie.title,
+        name: movie.name,
+        poster_path: movie.poster_path,
+        backdrop_path: movie.backdrop_path,
+        overview: movie.overview,
+        vote_average: movie.vote_average,
+        release_date: movie.release_date || movie.first_air_date,
+        media_type: movie.media_type,
+      }))
     }
-  }
-
-  const handleNavigate = () => {
-    const type =
-      movie.media_type === "tv" || movie.first_air_date ? "tv" : "movie"
-    navigate(`/detail/${type}/${movieTmdbId}`)
   }
 
   const handlePlayTrailer = (e) => {
     e.stopPropagation()
     setShowModal(true)
+  }
+
+  const handleNavigate = () => {
+    const type = movie.media_type === "tv" || movie.first_air_date ? "tv" : "movie"
+    navigate(`/detail/${type}/${movieTmdbId}`)
   }
 
   return (

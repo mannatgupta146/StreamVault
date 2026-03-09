@@ -7,11 +7,29 @@ const API_URL =
 const initialState = {
   favorites: [],
   history: [],
+  liked: [],
   isError: false,
   isSuccess: false,
   isLoading: false,
   message: "",
 }
+
+// Like Movie (local only, extend to backend if needed)
+export const likeMovie = createAsyncThunk(
+  "interactions/likeMovie",
+  async (movieData, thunkAPI) => {
+    // Optionally, persist to backend here
+    return movieData.tmdb_id
+  }
+)
+
+export const unlikeMovie = createAsyncThunk(
+  "interactions/unlikeMovie",
+  async (tmdbId, thunkAPI) => {
+    // Optionally, persist to backend here
+    return tmdbId
+  }
+)
 
 // Favorites
 export const getFavorites = createAsyncThunk(
@@ -128,6 +146,15 @@ export const interactionsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      // Like/Unlike
+      .addCase(likeMovie.fulfilled, (state, action) => {
+        if (!state.liked.includes(action.payload)) {
+          state.liked.push(action.payload)
+        }
+      })
+      .addCase(unlikeMovie.fulfilled, (state, action) => {
+        state.liked = state.liked.filter((id) => id !== action.payload)
+      })
       // Favorites Listeners
       .addCase(getFavorites.pending, (state) => {
         state.isLoading = true
