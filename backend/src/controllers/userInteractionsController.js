@@ -1,102 +1,155 @@
-import User from '../models/User.js';
-import Movie from '../models/Movie.js';
+import User from "../models/User.js"
 
 // @desc    Get user favorites
 // @route   GET /api/users/favorites
 // @access  Private
 export const getFavorites = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).populate('favorites');
-    res.json(user.favorites);
+    const user = await User.findById(req.user.id)
+    res.json(user.favorites)
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: error.message })
   }
-};
+}
 
 // @desc    Add movie to favorites
-// @route   POST /api/users/favorites/:movieId
+// @route   POST /api/users/favorites
 // @access  Private
 export const addFavorite = async (req, res) => {
   try {
-    const movie = await Movie.findById(req.params.movieId);
-    if (!movie) return res.status(404).json({ message: 'Movie not found' });
+    const {
+      tmdb_id,
+      title,
+      name,
+      poster_path,
+      backdrop_path,
+      overview,
+      vote_average,
+      release_date,
+      media_type,
+    } = req.body
 
-    const user = await User.findById(req.user.id);
-    
-    // Check if already in favorites
-    if (user.favorites.includes(movie._id)) {
-      return res.status(400).json({ message: 'Movie already in favorites' });
+    if (!tmdb_id) {
+      return res.status(400).json({ message: "tmdb_id is required" })
     }
 
-    user.favorites.push(movie._id);
-    await user.save();
-    
-    // Return populated favorites
-    const updatedUser = await User.findById(req.user.id).populate('favorites');
-    res.json(updatedUser.favorites);
+    const user = await User.findById(req.user.id)
+
+    // Check if already in favorites
+    if (user.favorites.some((fav) => fav.tmdb_id === tmdb_id)) {
+      return res.status(400).json({ message: "Movie already in favorites" })
+    }
+
+    user.favorites.push({
+      tmdb_id,
+      title,
+      name,
+      poster_path,
+      backdrop_path,
+      overview,
+      vote_average,
+      release_date,
+      media_type,
+    })
+    await user.save()
+
+    res.json(user.favorites)
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: error.message })
   }
-};
+}
 
 // @desc    Remove movie from favorites
-// @route   DELETE /api/users/favorites/:movieId
+// @route   DELETE /api/users/favorites/:tmdbId
 // @access  Private
 export const removeFavorite = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id);
-    
-    user.favorites = user.favorites.filter(
-      (id) => id.toString() !== req.params.movieId
-    );
-    
-    await user.save();
-    const updatedUser = await User.findById(req.user.id).populate('favorites');
-    res.json(updatedUser.favorites);
+    const tmdbId = Number(req.params.movieId)
+    const user = await User.findById(req.user.id)
+
+    user.favorites = user.favorites.filter((fav) => fav.tmdb_id !== tmdbId)
+
+    await user.save()
+    res.json(user.favorites)
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: error.message })
   }
-};
+}
 
 // @desc    Get user watch history
 // @route   GET /api/users/history
 // @access  Private
 export const getHistory = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).populate('history');
-    res.json(user.history);
+    const user = await User.findById(req.user.id)
+    res.json(user.history)
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: error.message })
   }
-};
+}
 
 // @desc    Add movie to watch history
-// @route   POST /api/users/history/:movieId
+// @route   POST /api/users/history
 // @access  Private
 export const addToHistory = async (req, res) => {
   try {
-    const movie = await Movie.findById(req.params.movieId);
-    if (!movie) return res.status(404).json({ message: 'Movie not found' });
+    const {
+      tmdb_id,
+      title,
+      name,
+      poster_path,
+      backdrop_path,
+      overview,
+      vote_average,
+      release_date,
+      media_type,
+    } = req.body
 
-    const user = await User.findById(req.user.id);
-
-    // Remove if already exists so we can push it to the front (latest)
-    user.history = user.history.filter(
-      (id) => id.toString() !== movie._id.toString()
-    );
-
-    // Add to the beginning of the array
-    user.history.unshift(movie._id);
-
-    // Optional: Keep history to max 50 items
-    if (user.history.length > 50) {
-      user.history.pop();
+    if (!tmdb_id) {
+      return res.status(400).json({ message: "tmdb_id is required" })
     }
 
-    await user.save();
-    const updatedUser = await User.findById(req.user.id).populate('history');
-    res.json(updatedUser.history);
+    const user = await User.findById(req.user.id)
+
+    // Remove if already exists so we can push it to the front (latest)
+    user.history = user.history.filter((item) => item.tmdb_id !== tmdb_id)
+
+    // Add to the beginning of the array
+    user.history.unshift({
+      tmdb_id,
+      title,
+      name,
+      poster_path,
+      backdrop_path,
+      overview,
+      vote_average,
+      release_date,
+      media_type,
+    })
+
+    // Keep history to max 50 items
+    if (user.history.length > 50) {
+      user.history.pop()
+    }
+
+    await user.save()
+    res.json(user.history)
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: error.message })
   }
-};
+}
+
+// @desc    Remove movie from watch history
+// @route   DELETE /api/users/history/:movieId
+// @access  Private
+export const removeFromHistory = async (req, res) => {
+  try {
+    const tmdbId = Number(req.params.movieId)
+    const user = await User.findById(req.user.id)
+    user.history = user.history.filter((item) => item.tmdb_id !== tmdbId)
+    await user.save()
+    res.json(user.history)
+  } catch (error) {
+    res.status(500).json({ message: error.message })
+  }
+}

@@ -1,7 +1,8 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
+import axios from "axios"
 
-const API_URL = 'http://localhost:5000/api/users/';
+const API_URL =
+  (import.meta.env.VITE_API_URL || "http://localhost:5000") + "/api/users/"
 
 const initialState = {
   favorites: [],
@@ -9,83 +10,118 @@ const initialState = {
   isError: false,
   isSuccess: false,
   isLoading: false,
-  message: '',
-};
+  message: "",
+}
 
 // Favorites
 export const getFavorites = createAsyncThunk(
-  'interactions/getFavorites',
+  "interactions/getFavorites",
   async (_, thunkAPI) => {
     try {
-      const token = thunkAPI.getState().auth.user.token;
-      const config = { headers: { Authorization: `Bearer ${token}` } };
-      const response = await axios.get(API_URL + 'favorites', config);
-      return response.data;
+      const token = thunkAPI.getState().auth.user.token
+      const config = { headers: { Authorization: `Bearer ${token}` } }
+      const response = await axios.get(API_URL + "favorites", config)
+      return response.data
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data.message || error.message);
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || error.message,
+      )
     }
-  }
-);
+  },
+)
 
+// movieData should be an object with: { tmdb_id, title, name, poster_path, backdrop_path, overview, vote_average, release_date, media_type }
 export const addFavorite = createAsyncThunk(
-  'interactions/addFavorite',
-  async (movieId, thunkAPI) => {
+  "interactions/addFavorite",
+  async (movieData, thunkAPI) => {
     try {
-      const token = thunkAPI.getState().auth.user.token;
-      const config = { headers: { Authorization: `Bearer ${token}` } };
-      const response = await axios.post(API_URL + 'favorites/' + movieId, {}, config);
-      return response.data; // returns full favorites array
+      const token = thunkAPI.getState().auth.user.token
+      const config = { headers: { Authorization: `Bearer ${token}` } }
+      const response = await axios.post(
+        API_URL + "favorites",
+        movieData,
+        config,
+      )
+      return response.data
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data.message || error.message);
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || error.message,
+      )
     }
-  }
-);
+  },
+)
 
 export const removeFavorite = createAsyncThunk(
-  'interactions/removeFavorite',
-  async (movieId, thunkAPI) => {
+  "interactions/removeFavorite",
+  async (tmdbId, thunkAPI) => {
     try {
-      const token = thunkAPI.getState().auth.user.token;
-      const config = { headers: { Authorization: `Bearer ${token}` } };
-      const response = await axios.delete(API_URL + 'favorites/' + movieId, config);
-      return response.data;
+      const token = thunkAPI.getState().auth.user.token
+      const config = { headers: { Authorization: `Bearer ${token}` } }
+      const response = await axios.delete(
+        API_URL + "favorites/" + tmdbId,
+        config,
+      )
+      return response.data
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data.message || error.message);
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || error.message,
+      )
     }
-  }
-);
+  },
+)
 
 // Watch History
 export const getHistory = createAsyncThunk(
-  'interactions/getHistory',
+  "interactions/getHistory",
   async (_, thunkAPI) => {
     try {
-      const token = thunkAPI.getState().auth.user.token;
-      const config = { headers: { Authorization: `Bearer ${token}` } };
-      const response = await axios.get(API_URL + 'history', config);
-      return response.data;
+      const token = thunkAPI.getState().auth.user.token
+      const config = { headers: { Authorization: `Bearer ${token}` } }
+      const response = await axios.get(API_URL + "history", config)
+      return response.data
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data.message || error.message);
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || error.message,
+      )
     }
-  }
-);
+  },
+)
 
+// movieData should be an object with: { tmdb_id, title, name, poster_path, backdrop_path, overview, vote_average, release_date, media_type }
 export const addToHistory = createAsyncThunk(
-  'interactions/addToHistory',
-  async (movieId, thunkAPI) => {
+  "interactions/addToHistory",
+  async (movieData, thunkAPI) => {
     try {
-      const token = thunkAPI.getState().auth.user.token;
-      const config = { headers: { Authorization: `Bearer ${token}` } };
-      const response = await axios.post(API_URL + 'history/' + movieId, {}, config);
-      return response.data; 
+      const token = thunkAPI.getState().auth.user.token
+      const config = { headers: { Authorization: `Bearer ${token}` } }
+      const response = await axios.post(API_URL + "history", movieData, config)
+      return response.data
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data.message || error.message);
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || error.message,
+      )
     }
-  }
-);
+  },
+)
+
+export const removeFromHistory = createAsyncThunk(
+  "interactions/removeFromHistory",
+  async (tmdbId, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token
+      const config = { headers: { Authorization: `Bearer ${token}` } }
+      const response = await axios.delete(API_URL + "history/" + tmdbId, config)
+      return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || error.message,
+      )
+    }
+  },
+)
 
 export const interactionsSlice = createSlice({
-  name: 'interactions',
+  name: "interactions",
   initialState,
   reducers: {
     resetInteractions: (state) => initialState,
@@ -93,34 +129,41 @@ export const interactionsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       // Favorites Listeners
-      .addCase(getFavorites.pending, (state) => { state.isLoading = true; })
+      .addCase(getFavorites.pending, (state) => {
+        state.isLoading = true
+      })
       .addCase(getFavorites.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.favorites = action.payload;
+        state.isLoading = false
+        state.favorites = action.payload
       })
       .addCase(getFavorites.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
+        state.isLoading = false
+        state.isError = true
+        state.message = action.payload
       })
       .addCase(addFavorite.fulfilled, (state, action) => {
-        state.favorites = action.payload;
+        state.favorites = action.payload
       })
       .addCase(removeFavorite.fulfilled, (state, action) => {
-        state.favorites = action.payload;
+        state.favorites = action.payload
       })
-      
+
       // History Listeners
-      .addCase(getHistory.pending, (state) => { state.isLoading = true; })
+      .addCase(getHistory.pending, (state) => {
+        state.isLoading = true
+      })
       .addCase(getHistory.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.history = action.payload;
+        state.isLoading = false
+        state.history = action.payload
       })
       .addCase(addToHistory.fulfilled, (state, action) => {
-        state.history = action.payload;
+        state.history = action.payload
+      })
+      .addCase(removeFromHistory.fulfilled, (state, action) => {
+        state.history = action.payload
       })
   },
-});
+})
 
-export const { resetInteractions } = interactionsSlice.actions;
-export default interactionsSlice.reducer;
+export const { resetInteractions } = interactionsSlice.actions
+export default interactionsSlice.reducer

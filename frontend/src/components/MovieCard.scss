@@ -1,4 +1,4 @@
-@use '../styles/main.scss' as *;
+@use "../styles/main.scss" as *;
 
 .movie-card {
   position: relative;
@@ -29,7 +29,7 @@
   &:hover {
     transform: scale(1.05);
     z-index: 10;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
 
     .card-image {
       opacity: 0.5;
@@ -42,7 +42,11 @@
     left: 0;
     right: 0;
     padding: 1rem;
-    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.9) 0%,
+      rgba(0, 0, 0, 0) 100%
+    );
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
@@ -58,13 +62,13 @@
         justify-content: center;
         border-radius: 50%;
         border: 2px solid rgba(255, 255, 255, 0.5);
-        background: rgba(0,0,0,0.5);
+        background: rgba(0, 0, 0, 0.5);
         color: white;
         transition: all 0.2s ease;
 
         &:hover {
           border-color: white;
-          background: rgba(255,255,255,0.2);
+          background: rgba(255, 255, 255, 0.2);
         }
       }
 
@@ -76,13 +80,18 @@
         border: none;
 
         &:hover {
-          background: rgba(255,255,255,0.8);
+          background: rgba(255, 255, 255, 0.8);
         }
       }
 
       .icon-btn {
         width: 28px;
         height: 28px;
+
+        &.active {
+          border-color: #46d369;
+          color: #46d369;
+        }
       }
 
       .expand-btn {
@@ -113,7 +122,7 @@
       gap: 0.3rem;
       font-size: 0.75rem;
       color: $text-secondary;
-      
+
       li {
         white-space: nowrap;
         overflow: hidden;
@@ -132,4 +141,3 @@
     }
   }
 }
-

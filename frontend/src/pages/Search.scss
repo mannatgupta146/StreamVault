@@ -1,0 +1,117 @@
+@use "../styles/main.scss" as *;
+
+.search-page {
+  padding: 100px 4rem 3rem;
+  min-height: 100vh;
+
+  .search-header {
+    margin-bottom: 1.5rem;
+
+    .search-input-wrapper {
+      max-width: 600px;
+
+      .search-input {
+        width: 100%;
+        padding: 0.9rem 1.2rem;
+        font-size: 1.1rem;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        color: $text-primary;
+        outline: none;
+        transition:
+          border-color 0.3s ease,
+          box-shadow 0.3s ease;
+
+        &::placeholder {
+          color: rgba(255, 255, 255, 0.4);
+        }
+
+        &:focus {
+          border-color: $accent-neon-blue;
+          box-shadow: 0 0 0 3px rgba(102, 252, 241, 0.12);
+        }
+      }
+    }
+
+    .search-summary {
+      margin-top: 1rem;
+      font-size: 1rem;
+      color: $text-secondary;
+    }
+  }
+
+  .search-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+
+    .tab {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.5rem 1.1rem;
+      font-size: 0.88rem;
+      font-weight: 500;
+      background: rgba(255, 255, 255, 0.06);
+      color: $text-secondary;
+      border: 1px solid transparent;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+
+      svg {
+        flex-shrink: 0;
+      }
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: $text-primary;
+      }
+
+      &.active {
+        background: rgba(102, 252, 241, 0.12);
+        color: $accent-neon-blue;
+        border-color: rgba(102, 252, 241, 0.3);
+      }
+    }
+  }
+
+  .search-results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 2rem;
+  }
+
+  .search-empty,
+  .search-no-results {
+    color: $text-secondary;
+    font-size: 1rem;
+    margin-top: 2rem;
+  }
+
+  .search-loading-more {
+    text-align: center;
+    padding: 2rem 0;
+    color: $text-secondary;
+  }
+
+  @media (max-width: 768px) {
+    padding: 90px 1.5rem 2rem;
+
+    .search-results-grid {
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 1rem;
+    }
+
+    .search-tabs {
+      gap: 0.35rem;
+
+      .tab {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+      }
+    }
+  }
+}

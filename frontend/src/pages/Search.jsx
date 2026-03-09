@@ -1,100 +1,182 @@
-import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import MovieCard from '../components/MovieCard';
-import PersonCard from '../components/PersonCard';
-import Loader from '../components/Loader';
-import { fetchSearchResults } from '../utils/tmdb';
-import { useInfiniteScroll } from '../hooks/useInfiniteScroll';
-import { useDebounce } from '../hooks/useDebounce';
+import React, { useState, useEffect, useCallback } from "react"
+import { useSearchParams } from "react-router-dom"
+import { Film, Tv, User, Layers } from "lucide-react"
+import MovieCard from "../components/MovieCard"
+import PersonCard from "../components/PersonCard"
+import Loader from "../components/Loader"
+import { fetchSearchResults } from "../utils/tmdb"
+import { useInfiniteScroll } from "../hooks/useInfiniteScroll"
+import { useDebounce } from "../hooks/useDebounce"
+import "./Search.scss"
+
+const TABS = [
+  { key: "all", label: "All", icon: <Layers size={16} /> },
+  { key: "movie", label: "Movies", icon: <Film size={16} /> },
+  { key: "tv", label: "TV Shows", icon: <Tv size={16} /> },
+  { key: "person", label: "People", icon: <User size={16} /> },
+]
 
 const Search = () => {
-  const [searchParams] = useSearchParams();
-  const rawQuery = searchParams.get('q') || '';
-  const query = useDebounce(rawQuery, 500); // 500ms debounce
-  
-  const [results, setResults] = useState([]);
-  const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
+  const [searchParams, setSearchParams] = useSearchParams()
+  const rawQuery = searchParams.get("q") || ""
+  const query = useDebounce(rawQuery, 500)
 
-  // Reset state when query changes
+  const [activeTab, setActiveTab] = useState("all")
+  const [results, setResults] = useState([])
+  const [page, setPage] = useState(1)
+  const [loading, setLoading] = useState(false)
+  const [hasMore, setHasMore] = useState(true)
+  const [inputValue, setInputValue] = useState(rawQuery)
+
+  // Sync local input with URL param
   useEffect(() => {
-    setResults([]);
-    setPage(1);
-    setHasMore(true);
-  }, [query]);
+    setInputValue(rawQuery)
+  }, [rawQuery])
 
-  // Fetch data when query or page changes
+  // Reset when query or tab changes
   useEffect(() => {
-    if (!query) return;
+    setResults([])
+    setPage(1)
+    setHasMore(true)
+  }, [query, activeTab])
 
+  // Fetch data
+  useEffect(() => {
+    if (!query) return
+
+    let cancelled = false
     const loadResults = async () => {
       try {
-        if(page === 1) setLoading(true);
-        const res = await fetchSearchResults(query, page);
-        
-        const fetchedResults = res.data.results;
-        
-        setResults(prev => page === 1 ? fetchedResults : [...prev, ...fetchedResults]);
-        setHasMore(res.data.page < res.data.total_pages);
+        if (page === 1) setLoading(true)
+        const res = await fetchSearchResults(query, page)
+        if (cancelled) return
+
+        let fetched = res.data.results
+
+        // Filter by active tab
+        if (activeTab !== "all") {
+          fetched = fetched.filter((item) => item.media_type === activeTab)
+        }
+
+        setResults((prev) => (page === 1 ? fetched : [...prev, ...fetched]))
+        setHasMore(res.data.page < res.data.total_pages)
       } catch (error) {
-        console.error("Error fetching search results:", error);
+        console.error("Error fetching search results:", error)
       } finally {
-        setLoading(false);
+        if (!cancelled) setLoading(false)
       }
-    };
-
-    loadResults();
-  }, [query, page]);
-
-  const loadMoreData = async () => {
-    if (hasMore && !loading) {
-      setPage(prev => prev + 1);
     }
-  };
 
-  const [lastElementRef] = useInfiniteScroll(loadMoreData);
+    loadResults()
+    return () => {
+      cancelled = true
+    }
+  }, [query, page, activeTab])
+
+  const loadMoreData = useCallback(async () => {
+    if (hasMore && !loading) {
+      setPage((prev) => prev + 1)
+    }
+  }, [hasMore, loading])
+
+  const [lastElementRef] = useInfiniteScroll(loadMoreData)
+
+  const handleInputChange = (e) => {
+    const val = e.target.value
+    setInputValue(val)
+    setSearchParams(val.trim() ? { q: val } : {})
+  }
+
+  // Counts for tab badges
+  const getCategoryCount = (key) => {
+    if (key === "all") return null
+    return results.filter((r) => r.media_type === key).length || null
+  }
 
   return (
-    <div className="page fade-in" style={{paddingTop: '100px', paddingLeft: '4rem', paddingRight: '4rem'}}>
-      <h1 style={{marginBottom: '2rem'}}>Search Results for "{query}"</h1>
-      
-      {!query && <p>Type something in the search bar above...</p>}
-      
+    <div className="search-page fade-in">
+      {/* Inline search input */}
+      <div className="search-header">
+        <div className="search-input-wrapper">
+          <input
+            type="text"
+            className="search-input"
+            placeholder="Search movies, TV shows, people..."
+            value={inputValue}
+            onChange={handleInputChange}
+            autoFocus
+          />
+        </div>
+
+        {query && (
+          <p className="search-summary">
+            {loading && page === 1 ? "Searching..." : `Results for "${query}"`}
+          </p>
+        )}
+      </div>
+
+      {/* Category tabs */}
+      {query && (
+        <div className="search-tabs">
+          {TABS.map((tab) => (
+            <button
+              key={tab.key}
+              className={`tab ${activeTab === tab.key ? "active" : ""}`}
+              onClick={() => setActiveTab(tab.key)}
+            >
+              {tab.icon}
+              {tab.label}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {!query && (
+        <p className="search-empty">
+          Start typing to search for movies, TV shows, and people...
+        </p>
+      )}
+
       {loading && page === 1 ? (
         <Loader count={8} />
       ) : (
-        <div className="movie-grid" style={{
-          display: 'grid', 
-          gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', 
-          gap: '2rem'
-        }}>
+        <div className="search-results-grid">
           {results.map((item, index) => {
-            const isLastElement = results.length === index + 1;
-            
-            let cardComponent;
-            if (item.media_type === 'person') {
-              cardComponent = <PersonCard person={item} />;
-            } else {
-              cardComponent = <MovieCard movie={item} />;
-            }
-            
+            const isLast = results.length === index + 1
+            const card =
+              item.media_type === "person" ? (
+                <PersonCard person={item} />
+              ) : (
+                <MovieCard movie={item} />
+              )
+
             return (
-              <div ref={isLastElement ? lastElementRef : null} key={item.id}>
-                {cardComponent}
+              <div
+                ref={isLast ? lastElementRef : null}
+                key={`${item.media_type}-${item.id}`}
+              >
+                {card}
               </div>
-            );
+            )
           })}
         </div>
       )}
 
-      {loading && page > 1 && <div style={{textAlign: 'center', margin: '2rem 0'}}><p>Loading more...</p></div>}
-      
+      {loading && page > 1 && (
+        <div className="search-loading-more">Loading more...</div>
+      )}
+
       {!loading && query && results.length === 0 && (
-        <p>No results found for "{query}".</p>
+        <p className="search-no-results">
+          No{" "}
+          {activeTab !== "all"
+            ? TABS.find((t) => t.key === activeTab)?.label.toLowerCase()
+            : "results"}{" "}
+          found for "{query}".
+        </p>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default Search;
+export default Search

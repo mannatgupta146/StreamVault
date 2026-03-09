@@ -1,0 +1,230 @@
+@use "../styles/main.scss" as *;
+
+.movie-detail {
+  .detail-hero {
+    position: relative;
+    width: 100%;
+    min-height: 75vh;
+    background-size: cover;
+    background-position: center top;
+    background-color: $bg-color;
+
+    .hero-overlay {
+      width: 100%;
+      min-height: 75vh;
+      background: linear-gradient(
+        to right,
+        rgba(11, 12, 16, 0.95) 0%,
+        rgba(11, 12, 16, 0.7) 50%,
+        rgba(11, 12, 16, 0.3) 100%
+      );
+      display: flex;
+      align-items: flex-end;
+      padding: 4rem 4rem 3rem;
+
+      .hero-content {
+        display: flex;
+        gap: 2.5rem;
+        align-items: flex-end;
+        max-width: 1200px;
+        width: 100%;
+
+        .detail-poster {
+          width: 260px;
+          border-radius: 12px;
+          box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+          flex-shrink: 0;
+        }
+
+        .detail-info {
+          display: flex;
+          flex-direction: column;
+          gap: 0.75rem;
+
+          h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            line-height: 1.1;
+          }
+
+          .detail-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 0.95rem;
+            color: $text-secondary;
+
+            .match {
+              color: #46d369;
+              font-weight: 700;
+            }
+          }
+
+          .detail-genres {
+            color: $accent-neon-blue;
+            font-size: 0.9rem;
+          }
+
+          .detail-overview {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: $text-secondary;
+            max-width: 600px;
+          }
+
+          .detail-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.5rem;
+
+            .btn {
+              display: flex;
+              align-items: center;
+              gap: 0.5rem;
+              padding: 0.7rem 1.6rem;
+              border-radius: 6px;
+              font-weight: 600;
+              font-size: 0.95rem;
+              transition: all 0.2s ease;
+            }
+
+            .btn-play {
+              background: $text-primary;
+              color: $bg-color;
+
+              &:hover {
+                background: rgba(255, 255, 255, 0.85);
+              }
+            }
+
+            .btn-fav {
+              background: rgba(255, 255, 255, 0.15);
+              color: $text-primary;
+              border: 1px solid rgba(255, 255, 255, 0.3);
+
+              &:hover {
+                background: rgba(255, 255, 255, 0.25);
+              }
+
+              &.active {
+                border-color: $accent-neon-blue;
+                color: $accent-neon-blue;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .detail-section {
+    padding: 2rem 4rem;
+
+    h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+    }
+  }
+
+  .videos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+
+    .video-thumb {
+      border-radius: 8px;
+      overflow: hidden;
+      background: $card-bg;
+
+      iframe {
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        display: block;
+      }
+
+      p {
+        padding: 0.6rem 0.8rem;
+        font-size: 0.85rem;
+        color: $text-secondary;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+
+  .images-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+
+    .image-thumb {
+      border-radius: 8px;
+      overflow: hidden;
+
+      img {
+        width: 100%;
+        display: block;
+        aspect-ratio: 16 / 9;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+
+        &:hover {
+          transform: scale(1.04);
+        }
+      }
+    }
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .detail-hero .hero-overlay {
+      padding: 6rem 1.5rem 2rem;
+
+      .hero-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+
+        .detail-poster {
+          width: 180px;
+        }
+
+        .detail-info {
+          align-items: center;
+
+          h1 {
+            font-size: 1.8rem;
+          }
+
+          .detail-meta {
+            justify-content: center;
+            flex-wrap: wrap;
+          }
+
+          .detail-overview {
+            max-width: 100%;
+          }
+
+          .detail-actions {
+            justify-content: center;
+            flex-wrap: wrap;
+          }
+        }
+      }
+    }
+
+    .detail-section {
+      padding: 1.5rem 1rem;
+    }
+
+    .videos-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .images-grid {
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+  }
+}
