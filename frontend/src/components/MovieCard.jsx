@@ -37,6 +37,7 @@ const MovieCard = ({ movie, isLargeRow }) => {
   }
   const [isHovered, setIsHovered] = useState(false)
   const [showModal, setShowModal] = useState(false)
+  const [tapRevealed, setTapRevealed] = useState(false)
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { user } = useSelector((state) => state.auth)
@@ -101,13 +102,30 @@ const MovieCard = ({ movie, isLargeRow }) => {
     navigate(`/detail/${type}/${movieTmdbId}`)
   }
 
+  // Mobile: first tap shows overlay, second tap navigates
+  const handleCardClick = () => {
+    const isTouchDevice = window.matchMedia("(hover: none)").matches
+    if (isTouchDevice) {
+      if (tapRevealed) {
+        setTapRevealed(false)
+        setIsHovered(false)
+        handleNavigate()
+      } else {
+        setTapRevealed(true)
+        setIsHovered(true)
+      }
+    } else {
+      handleNavigate()
+    }
+  }
+
   return (
     <>
       <div
         className={`movie-card ${isLargeRow ? "large" : ""} fade-in`}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        onClick={handleNavigate}
+        onMouseEnter={() => { if (!tapRevealed) setIsHovered(true) }}
+        onMouseLeave={() => { setIsHovered(false); setTapRevealed(false) }}
+        onClick={handleCardClick}
       >
         <img src={imageUrl} alt={title} className="card-image" loading="lazy" />
 

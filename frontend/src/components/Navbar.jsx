@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { Search, Bell, LogOut, LogIn, Film, Tv, User, Compass, Clock, BookMarked, Heart } from "lucide-react"
+import { Search, Bell, LogOut, LogIn, Film, Tv, User, Clock, Heart } from "lucide-react"
 import { useSelector, useDispatch } from "react-redux"
 import { logout, reset } from "../features/auth/authSlice"
 import { resetInteractions } from "../features/interactions/interactionsSlice"
@@ -22,14 +22,12 @@ const Navbar = () => {
   const dispatch = useDispatch()
   const { user } = useSelector((state) => state.auth)
 
-  // Add scroll listener for glassmorphism effect
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50)
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  // Close dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (searchRef.current && !searchRef.current.contains(e.target)) {
@@ -40,7 +38,6 @@ const Navbar = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside)
   }, [])
 
-  // Fetch live results when debounced query changes
   useEffect(() => {
     if (!debouncedQuery.trim()) {
       setDropdownResults([])
@@ -63,9 +60,7 @@ const Navbar = () => {
       }
     }
     fetchLive()
-    return () => {
-      cancelled = true
-    }
+    return () => { cancelled = true }
   }, [debouncedQuery])
 
   const handleSearchSubmit = (e) => {
@@ -109,16 +104,7 @@ const Navbar = () => {
         <ul className="navbar-links">
           <li className="nav-icon-link">
             <Link to="/">
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M3 9l9-7 9 7" />
                 <path d="M9 22V12H15V22" />
               </svg>
@@ -135,6 +121,12 @@ const Navbar = () => {
             <Link to="/tv-shows">
               <Tv size={22} />
               <span className="nav-label">TV</span>
+            </Link>
+          </li>
+          <li className="nav-icon-link">
+            <Link to="/people">
+              <User size={22} />
+              <span className="nav-label">People</span>
             </Link>
           </li>
           {user && (
@@ -156,16 +148,7 @@ const Navbar = () => {
           {user && user.role === "admin" && (
             <li className="nav-icon-link">
               <Link to="/admin">
-                <svg
-                  width="22"
-                  height="22"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="12" cy="7" r="4" />
                   <path d="M5.5 21h13a2 2 0 0 0 2-2v-2a7 7 0 0 0-14 0v2a2 2 0 0 0 2 2z" />
                 </svg>
@@ -176,8 +159,6 @@ const Navbar = () => {
         </ul>
       </div>
 
-      {/* Mobile menu drawer */}
-      {/* Only render mobile menu on mobile screens */}
       <div
         id="mobile-menu"
         className={`mobile-menu-drawer${mobileMenuOpen ? " open" : ""}`}
@@ -185,89 +166,32 @@ const Navbar = () => {
         tabIndex={mobileMenuOpen ? 0 : -1}
         onClick={() => setMobileMenuOpen(false)}
         style={{
-          display:
-            window.innerWidth <= 768
-              ? mobileMenuOpen
-                ? "block"
-                : "none"
-              : "none",
+          display: window.innerWidth <= 768 ? (mobileMenuOpen ? "block" : "none") : "none",
         }}
       >
-        <div
-          className="mobile-menu-content"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <button
-            className="mobile-menu-close"
-            aria-label="Close menu"
-            onClick={() => setMobileMenuOpen(false)}
-          >
+        <div className="mobile-menu-content" onClick={(e) => e.stopPropagation()}>
+          <button className="mobile-menu-close" aria-label="Close menu" onClick={() => setMobileMenuOpen(false)}>
             &times;
           </button>
           <ul className="mobile-menu-links">
-            <li>
-              <Link to="/" onClick={() => setMobileMenuOpen(false)}>
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link to="/movies" onClick={() => setMobileMenuOpen(false)}>
-                Movies
-              </Link>
-            </li>
-            <li>
-              <Link to="/tv-shows" onClick={() => setMobileMenuOpen(false)}>
-                TV Shows
-              </Link>
-            </li>
-            <li>
-              <Link to="/people" onClick={() => setMobileMenuOpen(false)}>
-                People
-              </Link>
-            </li>
-            {user && (
-              <li>
-                <Link to="/favorites" onClick={() => setMobileMenuOpen(false)}>
-                  Favorites
-                </Link>
-              </li>
-            )}
-            {user && (
-              <li>
-                <Link
-                  to="/watch-history"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  History
-                </Link>
-              </li>
-            )}
+            <li><Link to="/" onClick={() => setMobileMenuOpen(false)}>Home</Link></li>
+            <li><Link to="/movies" onClick={() => setMobileMenuOpen(false)}>Movies</Link></li>
+            <li><Link to="/tv-shows" onClick={() => setMobileMenuOpen(false)}>TV Shows</Link></li>
+            <li><Link to="/people" onClick={() => setMobileMenuOpen(false)}>People</Link></li>
+            {user && <li><Link to="/library" onClick={() => setMobileMenuOpen(false)}>Library</Link></li>}
+            {user && <li><Link to="/watch-history" onClick={() => setMobileMenuOpen(false)}>History</Link></li>}
             {user && user.role === "admin" && (
-              <li>
-                <Link to="/admin" onClick={() => setMobileMenuOpen(false)}>
-                  Admin
-                </Link>
-              </li>
+              <li><Link to="/admin" onClick={() => setMobileMenuOpen(false)}>Admin</Link></li>
             )}
           </ul>
           <div className="mobile-menu-user">
             {user ? (
-              <button
-                className="btn-logout"
-                onClick={() => {
-                  onLogout()
-                  setMobileMenuOpen(false)
-                }}
-              >
+              <button className="btn-logout" onClick={() => { onLogout(); setMobileMenuOpen(false) }}>
                 <LogOut size={20} className="icon" />
                 <span>{user.name}</span>
               </button>
             ) : (
-              <Link
-                to="/login"
-                onClick={() => setMobileMenuOpen(false)}
-                style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
-              >
+              <Link to="/login" onClick={() => setMobileMenuOpen(false)} style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
                 <LogIn size={20} className="icon" />
                 <span>Sign In</span>
               </Link>
@@ -276,18 +200,13 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Prevent background scroll when mobile menu is open */}
       {mobileMenuOpen && window.innerWidth <= 768 && (
         <style>{`body { overflow: hidden !important; }`}</style>
       )}
 
       <div className="navbar-right">
-        <div
-          className={`search-container${mobileSearchOpen ? " mobile-search-open" : ""}`}
-          ref={searchRef}
-        >
+        <div className={`search-container${mobileSearchOpen ? " mobile-search-open" : ""}`} ref={searchRef}>
           <form className="search-bar" onSubmit={handleSearchSubmit}>
-            {/* Desktop: always show icon and input. Mobile: show only icon until toggled. */}
             {window.innerWidth > 768 ? (
               <>
                 <Search size={20} className="icon" />
@@ -296,28 +215,15 @@ const Navbar = () => {
                   placeholder="Movies, shows and more"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  onFocus={() => {
-                    if (dropdownResults.length > 0) setShowDropdown(true)
-                  }}
+                  onFocus={() => { if (dropdownResults.length > 0) setShowDropdown(true) }}
                 />
               </>
             ) : (
               <>
                 {!mobileSearchOpen && (
-                  <button
-                    type="button"
-                    className="icon search-toggle-btn"
-                    aria-label="Open search"
+                  <button type="button" className="icon search-toggle-btn" aria-label="Open search"
                     onClick={() => setMobileSearchOpen(true)}
-                    style={{
-                      background: "none",
-                      border: 0,
-                      padding: 0,
-                      margin: 0,
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
+                    style={{ background: "none", border: 0, padding: 0, margin: 0 }}>
                     <Search size={20} />
                   </button>
                 )}
@@ -328,9 +234,7 @@ const Navbar = () => {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     onBlur={() => setMobileSearchOpen(false)}
-                    onFocus={() => {
-                      if (dropdownResults.length > 0) setShowDropdown(true)
-                    }}
+                    onFocus={() => { if (dropdownResults.length > 0) setShowDropdown(true) }}
                     autoFocus
                     style={{ width: "92vw", minWidth: 0, maxWidth: "92vw" }}
                   />
@@ -347,64 +251,27 @@ const Navbar = () => {
                 <>
                   {dropdownResults.map((item) => {
                     const imgBase = "https://image.tmdb.org/t/p/w92"
-                    const thumb =
-                      item.poster_path || item.profile_path
-                        ? `${imgBase}${item.poster_path || item.profile_path}`
-                        : null
-
+                    const thumb = item.poster_path || item.profile_path
+                      ? `${imgBase}${item.poster_path || item.profile_path}` : null
                     return (
-                      <button
-                        key={`${item.media_type}-${item.id}`}
-                        className="dropdown-item"
-                        onClick={() => handleResultClick(item)}
-                      >
+                      <button key={`${item.media_type}-${item.id}`} className="dropdown-item" onClick={() => handleResultClick(item)}>
                         <div className="dropdown-thumb">
-                          {thumb ? (
-                            <img src={thumb} alt="" />
-                          ) : (
-                            <div className="thumb-placeholder">
-                              {getMediaIcon(item.media_type)}
-                            </div>
-                          )}
+                          {thumb ? <img src={thumb} alt="" /> : <div className="thumb-placeholder">{getMediaIcon(item.media_type)}</div>}
                         </div>
                         <div className="dropdown-info">
-                          <span className="dropdown-title">
-                            {item.title || item.name}
-                          </span>
+                          <span className="dropdown-title">{item.title || item.name}</span>
                           <span className="dropdown-meta">
                             {getMediaIcon(item.media_type)}
-                            {item.media_type === "movie"
-                              ? "Movie"
-                              : item.media_type === "tv"
-                                ? "TV Show"
-                                : "Person"}
-                            {(item.release_date || item.first_air_date) && (
-                              <>
-                                {" "}
-                                &middot;{" "}
-                                {(
-                                  item.release_date || item.first_air_date
-                                ).substring(0, 4)}
-                              </>
-                            )}
-                            {item.vote_average > 0 && (
-                              <>
-                                {" "}
-                                &middot; {Math.round(item.vote_average * 10)}%
-                              </>
-                            )}
+                            {item.media_type === "movie" ? "Movie" : item.media_type === "tv" ? "TV Show" : "Person"}
+                            {(item.release_date || item.first_air_date) && <> &middot; {(item.release_date || item.first_air_date).substring(0, 4)}</>}
+                            {item.vote_average > 0 && <> &middot; {Math.round(item.vote_average * 10)}%</>}
                           </span>
                         </div>
                       </button>
                     )
                   })}
-                  <button
-                    className="dropdown-item dropdown-see-all"
-                    onClick={() => {
-                      setShowDropdown(false)
-                      navigate(`/search?q=${encodeURIComponent(searchQuery)}`)
-                    }}
-                  >
+                  <button className="dropdown-item dropdown-see-all"
+                    onClick={() => { setShowDropdown(false); navigate(`/search?q=${encodeURIComponent(searchQuery)}`) }}>
                     See all results for "{searchQuery}"
                   </button>
                 </>
@@ -418,25 +285,13 @@ const Navbar = () => {
         <Bell size={24} className="icon" />
         <div className="user-profile">
           {user ? (
-            <button
-              className="btn-logout"
-              onClick={onLogout}
-              style={{
-                background: "none",
-                color: "inherit",
-                display: "flex",
-                alignItems: "center",
-                gap: "0.5rem",
-              }}
-            >
+            <button className="btn-logout" onClick={onLogout}
+              style={{ background: "none", color: "inherit", display: "flex", alignItems: "center", gap: "0.5rem" }}>
               <LogOut size={24} className="icon" />
               <span>{user.name}</span>
             </button>
           ) : (
-            <Link
-              to="/login"
-              style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
-            >
+            <Link to="/login" style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
               <LogIn size={24} className="icon" />
               <span>Sign In</span>
             </Link>

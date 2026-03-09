@@ -32,7 +32,6 @@ function AppContent() {
     location.pathname === "/register" ||
     (location.pathname === "/admin" && (!user || user.role !== "admin"))
 
-  // Load favorites once when user is logged in so favorite indicators work everywhere
   useEffect(() => {
     if (user) {
       dispatch(getFavorites())
@@ -51,17 +50,12 @@ function AppContent() {
           <Route path="/movies" element={<Movies />} />
           <Route path="/tv-shows" element={<TVShows />} />
           <Route path="/people" element={<People />} />
-          <Route
-            path="/person/:personId/credits"
-            element={<PersonCreditsPage />}
-          />
+          <Route path="/person/:personId/credits" element={<PersonCreditsPage />} />
           <Route path="/detail/:type/:id" element={<MovieDetail />} />
           <Route path="/favorites" element={<Favorites />} />
           <Route path="/library" element={<Library />} />
           <Route path="/watch-history" element={<WatchHistory />} />
           <Route path="/admin" element={<Admin />} />
-          {/* Discover route removed as per user request */}
-          <Route path="/liked" element={<Favorites likedOnly={true} />} />
         </Routes>
       </main>
     </div>
