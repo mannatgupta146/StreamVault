@@ -1,0 +1,94 @@
+@use '../styles/main.scss' as *;
+
+.library-page {
+  padding: 100px 4% 4rem;
+  min-height: 100vh;
+
+  .library-header {
+    margin-bottom: 2.5rem;
+
+    h1 {
+      font-size: 2.4rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+    }
+
+    p {
+      color: $text-secondary;
+      margin-bottom: 2rem;
+      font-size: 1rem;
+    }
+
+    .library-tabs {
+      display: flex;
+      gap: 0.75rem;
+
+      .tab-btn {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.65rem 1.4rem;
+        border-radius: 50px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: transparent;
+        color: $text-secondary;
+        font-size: 0.95rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &:hover {
+          border-color: rgba(255, 255, 255, 0.3);
+          color: $text-primary;
+        }
+
+        &.active {
+          background: $accent-neon-blue;
+          border-color: $accent-neon-blue;
+          color: $bg-color;
+        }
+
+        .tab-count {
+          background: rgba(255, 255, 255, 0.2);
+          border-radius: 50px;
+          padding: 0.1rem 0.55rem;
+          font-size: 0.8rem;
+          font-weight: 600;
+        }
+      }
+    }
+  }
+
+  .library-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .library-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 5rem 2rem;
+    color: $text-secondary;
+    text-align: center;
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    margin-top: 1rem;
+
+    svg {
+      opacity: 0.3;
+    }
+
+    h3 {
+      font-size: 1.4rem;
+      color: $text-primary;
+    }
+
+    p {
+      font-size: 0.95rem;
+    }
+  }
+}

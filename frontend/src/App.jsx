@@ -12,6 +12,7 @@ import TVShows from "./pages/TVShows"
 import People from "./pages/People"
 import MovieDetail from "./pages/MovieDetail"
 import Favorites from "./pages/Favorites"
+import Library from "./pages/Library"
 import WatchHistory from "./pages/WatchHistory"
 import Admin from "./pages/Admin"
 import Login from "./pages/Login"
@@ -56,6 +57,7 @@ function AppContent() {
           />
           <Route path="/detail/:type/:id" element={<MovieDetail />} />
           <Route path="/favorites" element={<Favorites />} />
+          <Route path="/library" element={<Library />} />
           <Route path="/watch-history" element={<WatchHistory />} />
           <Route path="/admin" element={<Admin />} />
           {/* Discover route removed as per user request */}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { Search, Bell, LogOut, LogIn, Film, Tv, User } from "lucide-react"
+import { Search, Bell, LogOut, LogIn, Film, Tv, User, Compass, Clock, BookMarked, Heart } from "lucide-react"
 import { useSelector, useDispatch } from "react-redux"
 import { logout, reset } from "../features/auth/authSlice"
 import { resetInteractions } from "../features/interactions/interactionsSlice"
@@ -137,41 +137,17 @@ const Navbar = () => {
               <span className="nav-label">TV</span>
             </Link>
           </li>
-          <li className="nav-icon-link">
-            <Link to="/people">
-              <User size={22} />
-              <span className="nav-label">People</span>
-            </Link>
-          </li>
-          {/* Discover removed as per user request */}
           {user && (
             <>
-              <li className="nav-icon-link nav-dropdown">
-                <span className="nav-label">Library ▾</span>
-                <ul className="nav-dropdown-menu">
-                  <li>
-                    <Link to="/favorites">Favorites</Link>
-                  </li>
-                  <li>
-                    <Link to="/liked">Liked</Link>
-                  </li>
-                </ul>
+              <li className="nav-icon-link">
+                <Link to="/library">
+                  <Heart size={22} />
+                  <span className="nav-label">Library</span>
+                </Link>
               </li>
               <li className="nav-icon-link">
                 <Link to="/watch-history">
-                  <svg
-                    width="22"
-                    height="22"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <circle cx="12" cy="12" r="10" />
-                    <polyline points="12 6 12 12 16 14" />
-                  </svg>
+                  <Clock size={22} />
                   <span className="nav-label">History</span>
                 </Link>
               </li>
