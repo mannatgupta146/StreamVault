@@ -42,6 +42,11 @@ const MovieCard = ({ movie, isLargeRow }) => {
   const { user } = useSelector((state) => state.auth)
   const { favorites, liked } = useSelector((state) => state.interactions)
 
+  // Always use tmdb_id for favorites, fallback to id for TMDB API results
+  const movieTmdbId =
+    typeof movie.tmdb_id === "number" ? movie.tmdb_id : movie.id
+  const isLiked = liked && liked.includes(movieTmdbId)
+
   // Check if the movie is in favorites
   const isFavorited =
     favorites &&
@@ -49,13 +54,6 @@ const MovieCard = ({ movie, isLargeRow }) => {
       // Support both TMDB and backend favorite objects
       return (fav.id || fav.tmdb_id) === movieTmdbId
     })
-
-  if (!movie) return null
-
-  // Always use tmdb_id for favorites, fallback to id for TMDB API results
-  const movieTmdbId =
-    typeof movie.tmdb_id === "number" ? movie.tmdb_id : movie.id
-  const isLiked = liked && liked.includes(movieTmdbId)
 
   const imgBaseUrl = "https://image.tmdb.org/t/p/w500"
   // fallback placeholders

@@ -21,7 +21,7 @@ export const useInfiniteScroll = (callback) => {
     if (!isFetching) return;
     
     // Execute the callback function when scrolled to bottom
-    callback().finally(() => {
+    Promise.resolve(callback()).finally(() => {
       setIsFetching(false);
     });
 

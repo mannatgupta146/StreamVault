@@ -3,11 +3,14 @@ import User from "../models/User.js"
 // @desc    Get user favorites
 // @route   GET /api/users/favorites
 // @access  Private
+import fs from 'fs';
+
 export const getFavorites = async (req, res) => {
   try {
     const user = await User.findById(req.user.id)
     res.json(user.favorites)
   } catch (error) {
+    fs.writeFileSync('error_log.txt', error.stack || error.message);
     res.status(500).json({ message: error.message })
   }
 }
@@ -55,6 +58,7 @@ export const addFavorite = async (req, res) => {
 
     res.json(user.favorites)
   } catch (error) {
+    console.error('addFavorite 500 Error CAUSE: ', error);
     res.status(500).json({ message: error.message })
   }
 }

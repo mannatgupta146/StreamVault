@@ -19,8 +19,13 @@ export const protect = async (req, res, next) => {
       // Get user from the token
       req.user = await User.findById(decoded.id).select("-password")
 
+      // Check if user was deleted but token remains
+      if (!req.user) {
+         return res.status(401).json({ message: "Not authorized, user deleted" })
+      }
+
       // Check if user is banned
-      if (req.user && req.user.banned) {
+      if (req.user.banned) {
         return res.status(403).json({ message: "Your account has been banned" })
       }
 
