@@ -43,8 +43,8 @@ const People = () => {
         className="page people-page fade-in"
         style={{
           paddingTop: "100px",
-          paddingLeft: "4rem",
-          paddingRight: "4rem",
+          paddingLeft: window.innerWidth <= 768 ? "1rem" : "4rem",
+          paddingRight: window.innerWidth <= 768 ? "1rem" : "4rem",
         }}
       >
         <h1 style={{ marginBottom: "2rem" }}>Popular People</h1>
@@ -52,7 +52,7 @@ const People = () => {
           className="people-grid"
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
+            gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
             gap: "2rem",
           }}
         >

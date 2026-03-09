@@ -1,131 +1,102 @@
-import React, { useEffect, useState } from "react"
-import { useParams, useNavigate } from "react-router-dom"
-import { fetchPersonDetails, fetchPersonCredits } from "../utils/tmdb"
-import Loader from "../components/Loader"
-import MovieCard from "../components/MovieCard"
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { fetchPersonDetails, fetchPersonCredits } from "../utils/tmdb";
+import Loader from "../components/Loader";
+import MovieCard from "../components/MovieCard";
+import "./PersonCreditsPage.scss"; // Create this file
 
 const PersonCreditsPage = () => {
-  const [showFullBio, setShowFullBio] = useState(false)
-  const { personId } = useParams()
-  const [person, setPerson] = useState(null)
-  const [credits, setCredits] = useState([])
-  const [loading, setLoading] = useState(true)
-  const navigate = useNavigate()
+  const [showFullBio, setShowFullBio] = useState(false);
+  const { personId } = useParams();
+  const [person, setPerson] = useState(null);
+  const [credits, setCredits] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true)
+      setLoading(true);
       try {
         const [personRes, creditsRes] = await Promise.all([
           fetchPersonDetails(personId),
           fetchPersonCredits(personId),
-        ])
-        setPerson(personRes.data)
-        // Combine cast and crew, remove duplicates
-        const allCredits = [
-          ...(creditsRes.data.cast || []),
-          ...(creditsRes.data.crew || []),
-        ]
-        const uniqueCredits = Array.from(
-          new Map(allCredits.map((item) => [item.id, item])).values(),
-        )
-        setCredits(uniqueCredits)
+        ]);
+        setPerson(personRes.data);
+        const allCredits = [...(creditsRes.data.cast || []), ...(creditsRes.data.crew || [])];
+        const uniqueCredits = Array.from(new Map(allCredits.map((item) => [item.id, item])).values());
+        setCredits(uniqueCredits);
       } catch (e) {
-        setPerson(null)
-        setCredits([])
+        setPerson(null);
+        setCredits([]);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
-    fetchData()
-  }, [personId])
+    };
+    fetchData();
+  }, [personId]);
 
-  if (loading)
-    return (
-      <div className="page fade-in" style={{ paddingTop: 80 }}>
-        <Loader count={8} />
-      </div>
-    )
-  if (!person)
-    return (
-      <div className="page fade-in" style={{ paddingTop: 80, color: "#fff" }}>
-        Person not found.
-      </div>
-    )
+  if (loading) return <div className="page-loader"><Loader count={8} /></div>;
+  if (!person) return <div className="error-msg">Person not found.</div>;
+
+  const profileUrl = person.profile_path ? `https://image.tmdb.org/t/p/h632${person.profile_path}` : null;
 
   return (
-    <div
-      className="page fade-in"
-      style={{ paddingTop: 100, paddingLeft: "4rem", paddingRight: "4rem" }}
-    >
-      <button
-        onClick={() => navigate(-1)}
-        style={{
-          marginBottom: 24,
-          background: "none",
-          color: "#fff",
-          border: "1px solid #444",
-          borderRadius: 6,
-          padding: "6px 16px",
-          cursor: "pointer",
-        }}
-      >
-        ← Back
+    <div className="person-credits-page fade-in">
+      <button className="back-btn" onClick={() => navigate(-1)}>
+        <span className="arrow">←</span> Back
       </button>
-      <h1 style={{ marginBottom: 8 }}>{person.name}</h1>
-      {person.biography && (
-        <div
-          style={{
-            marginBottom: 16,
-            color: "#ccc",
-            fontSize: 18,
-            maxWidth: 900,
-            lineHeight: 1.6,
-          }}
-        >
-          {showFullBio || person.biography.length < 400
-            ? person.biography
-            : person.biography.slice(0, 400) + "..."}
-          {person.biography.length >= 400 && (
-            <button
-              onClick={() => setShowFullBio((v) => !v)}
-              style={{
-                marginLeft: 8,
-                background: "none",
-                color: "#66fcf1",
-                border: "none",
-                cursor: "pointer",
-                fontSize: 16,
-                textDecoration: "underline",
-                padding: 0,
-              }}
-            >
-              {showFullBio ? "Show less" : "Show more"}
-            </button>
+
+      <div className="person-hero">
+        <div className="profile-image-container">
+          {profileUrl ? (
+            <img src={profileUrl} alt={person.name} className="profile-img" />
+          ) : (
+            <div className="profile-placeholder" />
           )}
         </div>
-      )}
-      <div style={{ marginBottom: 24, color: "#aaa" }}>
-        {person.known_for_department || "Actor"}
+
+        <div className="person-details">
+          <span className="badge">{person.known_for_department || "Talent"}</span>
+          <h1 className="person-name">{person.name}</h1>
+          
+          {person.birthday && (
+            <p className="person-meta">
+              <strong>Born:</strong> {new Date(person.birthday).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+              {person.place_of_birth && <span className="birth-place"> • {person.place_of_birth}</span>}
+            </p>
+          )}
+
+          {person.biography && (() => {
+            const isMob = window.innerWidth <= 768;
+            const LIMIT = 250;
+            const isLong = person.biography.length > LIMIT;
+            const bioText = isMob && isLong && !showFullBio
+              ? person.biography.trim().slice(0, LIMIT) + "..."
+              : person.biography.trim();
+            return (
+              <div className="bio-container">
+                <p className="bio-text">{bioText}</p>
+                {isMob && isLong && (
+                  <button className="bio-toggle" onClick={() => setShowFullBio(!showFullBio)}>
+                    {showFullBio ? "Read Less ↑" : "Read Full Bio ↓"}
+                  </button>
+                )}
+              </div>
+            );
+          })()}
+        </div>
       </div>
-      <h2 style={{ marginBottom: 16 }}>All Movies & TV Shows</h2>
-      {credits.length === 0 ? (
-        <div style={{ color: "#ccc" }}>No credits found.</div>
-      ) : (
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
-            gap: 32,
-          }}
-        >
+
+      <div className="credits-section">
+        <h2 className="section-title">Filmography</h2>
+        <div className="credits-grid">
           {credits.map((item) => (
             <MovieCard key={item.id} movie={item} isLargeRow />
           ))}
         </div>
-      )}
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default PersonCreditsPage
+export default PersonCreditsPage;

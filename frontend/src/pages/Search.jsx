@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react"
-import { useSearchParams } from "react-router-dom"
+import { useSearchParams, useNavigate } from "react-router-dom"
 import { Film, Tv, User, Layers } from "lucide-react"
 import MovieCard from "../components/MovieCard"
 import PersonCard from "../components/PersonCard"
@@ -27,6 +27,11 @@ const Search = () => {
   const [loading, setLoading] = useState(false)
   const [hasMore, setHasMore] = useState(true)
   const [inputValue, setInputValue] = useState(rawQuery)
+  const navigate = useNavigate()
+
+  const handlePersonClick = (person) => {
+    navigate(`/person/${person.id}/credits`)
+  }
 
   // Sync local input with URL param
   useEffect(() => {
@@ -145,7 +150,7 @@ const Search = () => {
             const isLast = results.length === index + 1
             const card =
               item.media_type === "person" ? (
-                <PersonCard person={item} />
+                <PersonCard person={item} onClick={handlePersonClick} />
               ) : (
                 <MovieCard movie={item} />
               )
