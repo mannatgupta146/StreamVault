@@ -18,6 +18,15 @@ const pickBestVideo = (results) => {
   )
 }
 
+// Extract YouTube ID from various URL formats
+const extractYouTubeKey = (url) => {
+  if (!url) return null
+  if (url.length === 11 && !url.includes("/") && !url.includes(".")) return url
+  const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i
+  const match = url.match(regex)
+  return match ? match[1] : null
+}
+
 const TrailerModal = ({ onClose, movie }) => {
   const [trailerKey, setTrailerKey] = useState("")
   const [loading, setLoading] = useState(true)
@@ -29,6 +38,16 @@ const TrailerModal = ({ onClose, movie }) => {
   const movieId = movie?.id || movie?.tmdb_id
 
   useEffect(() => {
+    // If Admin provided a direct trailer URL, use it immediately
+    if (movie?.trailer_url) {
+      const key = extractYouTubeKey(movie.trailer_url)
+      if (key) {
+        setTrailerKey(key)
+        setLoading(false)
+        return
+      }
+    }
+
     if (!movieId) {
       setLoading(false)
       return

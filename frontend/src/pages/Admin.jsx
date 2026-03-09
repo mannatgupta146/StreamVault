@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
+import AdminLogin from "./AdminLogin"
 import {
   getMovies,
   createMovie,
@@ -46,13 +47,19 @@ const Admin = () => {
   const { users, isLoading: usersLoading } = useSelector((state) => state.admin)
 
   useEffect(() => {
-    if (!user || user.role !== "admin") {
-      navigate("/")
-    } else {
+    if (user && user.role === "admin") {
       dispatch(getMovies())
       dispatch(getUsers())
     }
-  }, [user, navigate, dispatch])
+  }, [user, dispatch])
+
+  if (!user || user.role !== "admin") {
+    return <AdminLogin />
+  }
+
+  if (user.role !== "admin") {
+    return null
+  }
 
   const onChange = (e) => {
     setFormData((prevState) => ({

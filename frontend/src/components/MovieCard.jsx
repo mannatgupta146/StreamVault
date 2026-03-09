@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Play, Plus, Check, ThumbsUp, ChevronDown } from "lucide-react"
+import { Play, Plus, Check, ThumbsUp, ChevronDown, Star } from "lucide-react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import {
@@ -146,6 +146,10 @@ const MovieCard = ({ movie, isLargeRow }) => {
                   ? Math.round(movie.vote_average * 10)
                   : "New"}
                 % Match
+              </span>
+              <span className="rating-score" style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#ffd600' }}>
+                <Star size={14} fill="#ffd600" color="#ffd600" /> 
+                {movie.vote_average ? movie.vote_average.toFixed(1) : "N/A"}
               </span>
               <span className="rating">{movie.adult ? "R" : "PG-13"}</span>
               <span className="duration">

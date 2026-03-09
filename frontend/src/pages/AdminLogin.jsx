@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { login, reset } from '../features/auth/authSlice';
+import { login, logout, reset } from '../features/auth/authSlice';
+import { useNavigate } from 'react-router-dom';
 import './Auth.scss';
 
-const Login = () => {
+const AdminLogin = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -11,6 +12,7 @@ const Login = () => {
 
   const { email, password } = formData;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { user, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.auth
   );
@@ -18,16 +20,15 @@ const Login = () => {
   useEffect(() => {
     if (isError) {
       alert(message);
+      dispatch(reset());
     }
-    if (isSuccess || user) {
-      if (user && user.role === 'admin') {
-        window.location.href = '/admin'; // Redirect admins to dashboard
-      } else {
-        window.location.href = '/'; // Redirect normal users to home
-      }
+    
+    // If a non-admin enters this page while logged in, log them out immediately
+    if (user && user.role !== 'admin') {
+      dispatch(logout());
+      dispatch(reset());
     }
-    dispatch(reset());
-  }, [user, isError, isSuccess, message, dispatch]);
+  }, [user, isError, message, dispatch]);
 
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -42,12 +43,15 @@ const Login = () => {
     dispatch(login(userData));
   };
 
-  if (isLoading) return <div className="page fade-in"><h1>Loading...</h1></div>;
+  if (isLoading) return <div className="page fade-in"><h1>Authenticating Admin...</h1></div>;
 
   return (
     <div className="auth-page fade-in">
-      <div className="auth-box">
-        <h2>Sign In To StreamVault</h2>
+      <div className="auth-box admin-auth-box" style={{ borderTop: "4px solid #e50914" }}>
+        <h2 style={{ color: "white" }}>Admin Portal</h2>
+        <p style={{ textAlign: "center", marginBottom: "2rem", color: "#999", fontSize: "0.9rem" }}>
+          Restricted Access. Authorized Personnel Only.
+        </p>
         <form onSubmit={onSubmit}>
           <div className="form-group">
             <input
@@ -56,7 +60,7 @@ const Login = () => {
               id="email"
               name="email"
               value={email}
-              placeholder="Email Address"
+              placeholder="Admin Email"
               onChange={onChange}
               required
             />
@@ -68,21 +72,18 @@ const Login = () => {
               id="password"
               name="password"
               value={password}
-              placeholder="Password"
+              placeholder="Admin Password"
               onChange={onChange}
               required
             />
           </div>
-          <button type="submit" className="btn btn-auth">
-            Sign In
+          <button type="submit" className="btn btn-auth" style={{ background: "#e50914", fontWeight: "bold" }}>
+            Access Dashboard
           </button>
         </form>
-        <p className="auth-redirect">
-          New to StreamVault? <a href="/register">Sign up now.</a>
-        </p>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default AdminLogin;

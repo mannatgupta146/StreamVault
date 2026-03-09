@@ -26,7 +26,9 @@ function AppContent() {
   const dispatch = useDispatch()
   const { user } = useSelector((state) => state.auth)
   const hideNavbar =
-    location.pathname === "/login" || location.pathname === "/register"
+    location.pathname === "/login" || 
+    location.pathname === "/register" ||
+    (location.pathname === "/admin" && (!user || user.role !== "admin"))
 
   // Load favorites once when user is logged in so favorite indicators work everywhere
   useEffect(() => {
