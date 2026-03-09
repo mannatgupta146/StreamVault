@@ -5,6 +5,7 @@ import Loader from "../components/Loader"
 import MovieCard from "../components/MovieCard"
 
 const PersonCreditsPage = () => {
+  const [showFullBio, setShowFullBio] = useState(false)
   const { personId } = useParams()
   const [person, setPerson] = useState(null)
   const [credits, setCredits] = useState([])
@@ -72,6 +73,38 @@ const PersonCreditsPage = () => {
         ← Back
       </button>
       <h1 style={{ marginBottom: 8 }}>{person.name}</h1>
+      {person.biography && (
+        <div
+          style={{
+            marginBottom: 16,
+            color: "#ccc",
+            fontSize: 18,
+            maxWidth: 900,
+            lineHeight: 1.6,
+          }}
+        >
+          {showFullBio || person.biography.length < 400
+            ? person.biography
+            : person.biography.slice(0, 400) + "..."}
+          {person.biography.length >= 400 && (
+            <button
+              onClick={() => setShowFullBio((v) => !v)}
+              style={{
+                marginLeft: 8,
+                background: "none",
+                color: "#66fcf1",
+                border: "none",
+                cursor: "pointer",
+                fontSize: 16,
+                textDecoration: "underline",
+                padding: 0,
+              }}
+            >
+              {showFullBio ? "Show less" : "Show more"}
+            </button>
+          )}
+        </div>
+      )}
       <div style={{ marginBottom: 24, color: "#aaa" }}>
         {person.known_for_department || "Actor"}
       </div>

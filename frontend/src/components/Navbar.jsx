@@ -143,44 +143,39 @@ const Navbar = () => {
               <span className="nav-label">People</span>
             </Link>
           </li>
+          {/* Discover removed as per user request */}
           {user && (
-            <li className="nav-icon-link">
-              <Link to="/favorites">
-                <svg
-                  width="22"
-                  height="22"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0l-.5.5-.5-.5a5.5 5.5 0 0 0-7.8 7.8l.5.5L12 21.3l7.3-8.4.5-.5a5.5 5.5 0 0 0 0-7.8z" />
-                </svg>
-                <span className="nav-label">Favs</span>
-              </Link>
-            </li>
-          )}
-          {user && (
-            <li className="nav-icon-link">
-              <Link to="/watch-history">
-                <svg
-                  width="22"
-                  height="22"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <circle cx="12" cy="12" r="10" />
-                  <polyline points="12 6 12 12 16 14" />
-                </svg>
-                <span className="nav-label">History</span>
-              </Link>
-            </li>
+            <>
+              <li className="nav-icon-link nav-dropdown">
+                <span className="nav-label">Library ▾</span>
+                <ul className="nav-dropdown-menu">
+                  <li>
+                    <Link to="/favorites">Favorites</Link>
+                  </li>
+                  <li>
+                    <Link to="/liked">Liked</Link>
+                  </li>
+                </ul>
+              </li>
+              <li className="nav-icon-link">
+                <Link to="/watch-history">
+                  <svg
+                    width="22"
+                    height="22"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <polyline points="12 6 12 12 16 14" />
+                  </svg>
+                  <span className="nav-label">History</span>
+                </Link>
+              </li>
+            </>
           )}
           {user && user.role === "admin" && (
             <li className="nav-icon-link">

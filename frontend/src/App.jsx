@@ -58,6 +58,8 @@ function AppContent() {
           <Route path="/favorites" element={<Favorites />} />
           <Route path="/watch-history" element={<WatchHistory />} />
           <Route path="/admin" element={<Admin />} />
+          {/* Discover route removed as per user request */}
+          <Route path="/liked" element={<Favorites likedOnly={true} />} />
         </Routes>
       </main>
     </div>
