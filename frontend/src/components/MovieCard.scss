@@ -28,7 +28,7 @@ $button-size: 34px;
   transition: $card-transition;
 
   &.large {
-    min-width: 220px;
+    min-width: 320px;
     height: 400px;
   }
 
@@ -40,7 +40,9 @@ $button-size: 34px;
     object-fit: cover;
     display: block;
 
-    transition: opacity 0.35s ease, transform 0.35s ease;
+    transition:
+      opacity 0.35s ease,
+      transform 0.35s ease;
   }
 
   /* HOVER */

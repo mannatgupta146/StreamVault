@@ -20,13 +20,14 @@ import Search from "./pages/Search"
 import Navbar from "./components/Navbar"
 import ErrorBoundary from "./components/ErrorBoundary"
 import { getFavorites } from "./features/interactions/interactionsSlice"
+import PersonCreditsPage from "./pages/PersonCreditsPage"
 
 function AppContent() {
   const location = useLocation()
   const dispatch = useDispatch()
   const { user } = useSelector((state) => state.auth)
   const hideNavbar =
-    location.pathname === "/login" || 
+    location.pathname === "/login" ||
     location.pathname === "/register" ||
     (location.pathname === "/admin" && (!user || user.role !== "admin"))
 
@@ -49,6 +50,10 @@ function AppContent() {
           <Route path="/movies" element={<Movies />} />
           <Route path="/tv-shows" element={<TVShows />} />
           <Route path="/people" element={<People />} />
+          <Route
+            path="/person/:personId/credits"
+            element={<PersonCreditsPage />}
+          />
           <Route path="/detail/:type/:id" element={<MovieDetail />} />
           <Route path="/favorites" element={<Favorites />} />
           <Route path="/watch-history" element={<WatchHistory />} />

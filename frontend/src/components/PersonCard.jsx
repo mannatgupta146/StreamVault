@@ -1,7 +1,7 @@
 import React from "react"
 import "./PersonCard.scss"
 
-const PersonCard = ({ person }) => {
+const PersonCard = ({ person, onClick }) => {
   if (!person) return null
 
   const imgBaseUrl = "https://image.tmdb.org/t/p/w500"
@@ -13,7 +13,10 @@ const PersonCard = ({ person }) => {
       : backupImg
 
   return (
-    <div className="person-card fade-in">
+    <div
+      className="person-card fade-in"
+      onClick={() => onClick && onClick(person)}
+    >
       <div className="image-container">
         <img
           src={imageUrl}
