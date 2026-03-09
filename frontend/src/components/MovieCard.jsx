@@ -46,7 +46,8 @@ const MovieCard = ({ movie, isLargeRow }) => {
   // Always use tmdb_id for favorites, fallback to id for TMDB API results
   const movieTmdbId =
     typeof movie.tmdb_id === "number" ? movie.tmdb_id : movie.id
-  const isLiked = liked && liked.includes(movieTmdbId)
+  
+  const isLiked = liked && liked.some((item) => (item.tmdb_id || item.id) === movieTmdbId)
 
   // Check if the movie is in favorites
   const isFavorited =

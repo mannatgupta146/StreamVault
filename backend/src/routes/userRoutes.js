@@ -7,6 +7,9 @@ import {
   getHistory,
   addToHistory,
   removeFromHistory,
+  getLiked,
+  addLiked,
+  removeLiked,
 } from "../controllers/userInteractionsController.js"
 import { protect, admin } from "../middlewares/auth.js"
 
@@ -20,6 +23,10 @@ router.route("/favorites/:movieId").delete(protect, removeFavorite)
 router.route("/history").get(protect, getHistory).post(protect, addToHistory)
 
 router.route("/history/:movieId").delete(protect, removeFromHistory)
+
+router.route("/liked").get(protect, getLiked).post(protect, addLiked)
+
+router.route("/liked/:movieId").delete(protect, removeLiked)
 
 // Admin Routes (Moderation)
 router.route("/").get(protect, admin, getUsers)

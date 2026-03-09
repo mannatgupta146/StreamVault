@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
-import { Play, Plus, Check } from "lucide-react"
+import { Play, Plus, Check, ThumbsUp } from "lucide-react"
 import {
   addFavorite,
   removeFavorite,
+  likeMovie,
+  unlikeMovie,
+  getLiked,
 } from "../features/interactions/interactionsSlice"
 import MovieRow from "../components/MovieRow"
 import TrailerModal from "../components/TrailerModal"
@@ -25,7 +28,7 @@ const MovieDetail = () => {
   const { type, id } = useParams() // type = 'movie' or 'tv'
   const dispatch = useDispatch()
   const { user } = useSelector((state) => state.auth)
-  const { favorites } = useSelector((state) => state.interactions)
+  const { favorites, liked } = useSelector((state) => state.interactions)
 
   const [details, setDetails] = useState(null)
   const [images, setImages] = useState([])
@@ -73,6 +76,12 @@ const MovieDetail = () => {
     if (id) load()
   }, [type, id, isMovie])
 
+  useEffect(() => {
+    if (user) {
+      dispatch(getLiked())
+    }
+  }, [user, dispatch])
+
   if (loading) {
     return (
       <div className="page fade-in" style={{ paddingTop: "80px" }}>
@@ -109,8 +118,11 @@ const MovieDetail = () => {
       : ""
 
   const isFav = favorites.some((f) => f.tmdb_id === Number(id))
+  // Correctly check if the movie is in the liked array of objects
+  const isLiked = liked && liked.some((l) => (l.tmdb_id || l.id) === Number(id))
+
   const movieObj = {
-    id: Number(id),
+    tmdb_id: Number(id),
     title: details.title,
     name: details.name,
     poster_path: details.poster_path,
@@ -127,18 +139,17 @@ const MovieDetail = () => {
       dispatch(removeFavorite(Number(id)))
     } else {
       dispatch(
-        addFavorite({
-          tmdb_id: Number(id),
-          title: details.title,
-          name: details.name,
-          poster_path: details.poster_path,
-          backdrop_path: details.backdrop_path,
-          overview: details.overview,
-          vote_average: details.vote_average,
-          release_date: releaseDate,
-          media_type: type,
-        }),
+        addFavorite(movieObj),
       )
+    }
+  }
+
+  const handleLike = () => {
+    if (!user) return
+    if (isLiked) {
+      dispatch(unlikeMovie(Number(id)))
+    } else {
+      dispatch(likeMovie(movieObj))
     }
   }
 
@@ -183,13 +194,22 @@ const MovieDetail = () => {
                   <Play fill="currentColor" size={18} /> Play Trailer
                 </button>
                 {user && (
-                  <button
-                    className={`btn btn-fav ${isFav ? "active" : ""}`}
-                    onClick={handleFavorite}
-                  >
-                    {isFav ? <Check size={18} /> : <Plus size={18} />}
-                    {isFav ? "In Favorites" : "Add to Favorites"}
-                  </button>
+                  <>
+                    <button
+                      className={`btn btn-fav ${isFav ? "active" : ""}`}
+                      onClick={handleFavorite}
+                    >
+                      {isFav ? <Check size={18} /> : <Plus size={18} />}
+                      {isFav ? "In Favorites" : "Add to Favorites"}
+                    </button>
+                    <button
+                      className={`btn btn-like ${isLiked ? "active" : ""}`}
+                      onClick={handleLike}
+                    >
+                      <ThumbsUp size={18} fill={isLiked ? "currentColor" : "none"} />
+                      {isLiked ? "Liked" : "Like"}
+                    </button>
+                  </>
                 )}
               </div>
             </div>

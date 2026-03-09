@@ -52,7 +52,7 @@ StreamVault/
 ├── backend/                # Express.js Server
 │   ├── src/
 │   │   ├── controllers/    # API Request Handlers
-│   │   ├── models/         # MongoDB Schemas
+│   │   ├── models/         # MongoDB Schemas (User, Movie, Favorites, Liked)
 │   │   ├── routes/         # API Route Definitions
 │   │   ├── middlewares/    # Auth & Admin Guards
 │   │   └── server.js       # Entry Point

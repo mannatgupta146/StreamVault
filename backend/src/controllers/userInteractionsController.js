@@ -157,3 +157,78 @@ export const removeFromHistory = async (req, res) => {
     res.status(500).json({ message: error.message })
   }
 }
+// @desc    Get user liked movies
+// @route   GET /api/users/liked
+// @access  Private
+export const getLiked = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id)
+    res.json(user.liked || [])
+  } catch (error) {
+    res.status(500).json({ message: error.message })
+  }
+}
+
+// @desc    Add movie to liked
+// @route   POST /api/users/liked
+// @access  Private
+export const addLiked = async (req, res) => {
+  try {
+    const {
+      tmdb_id,
+      title,
+      name,
+      poster_path,
+      backdrop_path,
+      overview,
+      vote_average,
+      release_date,
+      media_type,
+    } = req.body
+
+    if (!tmdb_id) {
+      return res.status(400).json({ message: "tmdb_id is required" })
+    }
+
+    const user = await User.findById(req.user.id)
+
+    // Check if already in liked
+    if (user.liked.some((item) => item.tmdb_id === tmdb_id)) {
+      return res.status(400).json({ message: "Movie already liked" })
+    }
+
+    user.liked.push({
+      tmdb_id,
+      title,
+      name,
+      poster_path,
+      backdrop_path,
+      overview,
+      vote_average,
+      release_date,
+      media_type,
+    })
+    await user.save()
+
+    res.json(user.liked)
+  } catch (error) {
+    res.status(500).json({ message: error.message })
+  }
+}
+
+// @desc    Remove movie from liked
+// @route   DELETE /api/users/liked/:movieId
+// @access  Private
+export const removeLiked = async (req, res) => {
+  try {
+    const tmdbId = Number(req.params.movieId)
+    const user = await User.findById(req.user.id)
+
+    user.liked = user.liked.filter((item) => item.tmdb_id !== tmdbId)
+
+    await user.save()
+    res.json(user.liked)
+  } catch (error) {
+    res.status(500).json({ message: error.message })
+  }
+}

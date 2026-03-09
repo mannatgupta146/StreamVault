@@ -14,20 +14,52 @@ const initialState = {
   message: "",
 }
 
-// Like Movie (local only, extend to backend if needed)
+// Like/Unlike Persistence
+export const getLiked = createAsyncThunk(
+  "interactions/getLiked",
+  async (_, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token
+      const config = { headers: { Authorization: `Bearer ${token}` } }
+      const response = await axios.get(API_URL + "liked", config)
+      return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || error.message,
+      )
+    }
+  },
+)
+
 export const likeMovie = createAsyncThunk(
   "interactions/likeMovie",
   async (movieData, thunkAPI) => {
-    // Optionally, persist to backend here
-    return movieData.tmdb_id
+    try {
+      const token = thunkAPI.getState().auth.user.token
+      const config = { headers: { Authorization: `Bearer ${token}` } }
+      const response = await axios.post(API_URL + "liked", movieData, config)
+      return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || error.message,
+      )
+    }
   },
 )
 
 export const unlikeMovie = createAsyncThunk(
   "interactions/unlikeMovie",
   async (tmdbId, thunkAPI) => {
-    // Optionally, persist to backend here
-    return tmdbId
+    try {
+      const token = thunkAPI.getState().auth.user.token
+      const config = { headers: { Authorization: `Bearer ${token}` } }
+      const response = await axios.delete(API_URL + "liked/" + tmdbId, config)
+      return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || error.message,
+      )
+    }
   },
 )
 
@@ -146,14 +178,15 @@ export const interactionsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // Like/Unlike
+      // Like/Unlike persistence
+      .addCase(getLiked.fulfilled, (state, action) => {
+        state.liked = action.payload
+      })
       .addCase(likeMovie.fulfilled, (state, action) => {
-        if (!state.liked.includes(action.payload)) {
-          state.liked.push(action.payload)
-        }
+        state.liked = action.payload
       })
       .addCase(unlikeMovie.fulfilled, (state, action) => {
-        state.liked = state.liked.filter((id) => id !== action.payload)
+        state.liked = action.payload
       })
       // Favorites Listeners
       .addCase(getFavorites.pending, (state) => {

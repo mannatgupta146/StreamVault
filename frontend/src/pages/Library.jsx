@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
-import { getFavorites } from "../features/interactions/interactionsSlice"
+import { getFavorites, getLiked } from "../features/interactions/interactionsSlice"
 import MovieCard from "../components/MovieCard"
 import Loader from "../components/Loader"
 import { Heart, Star } from "lucide-react"
@@ -22,6 +22,7 @@ const Library = () => {
       navigate("/login")
     } else {
       dispatch(getFavorites())
+      dispatch(getLiked())
     }
   }, [user, navigate, dispatch])
 

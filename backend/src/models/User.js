@@ -59,6 +59,20 @@ const UserSchema = new mongoose.Schema(
         watchedAt: { type: Date, default: Date.now },
       },
     ],
+    liked: [
+      {
+        tmdb_id: { type: Number, required: true },
+        title: String,
+        name: String,
+        poster_path: String,
+        backdrop_path: String,
+        overview: String,
+        vote_average: Number,
+        release_date: String,
+        media_type: String,
+        likedAt: { type: Date, default: Date.now },
+      },
+    ],
   },
   { timestamps: true },
 )

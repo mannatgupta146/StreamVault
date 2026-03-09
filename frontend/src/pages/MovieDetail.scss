@@ -111,6 +111,21 @@
                 color: $accent-neon-blue;
               }
             }
+
+            .btn-like {
+              background: rgba(255, 255, 255, 0.15);
+              color: $text-primary;
+              border: 1px solid rgba(255, 255, 255, 0.3);
+
+              &:hover {
+                background: rgba(255, 255, 255, 0.25);
+              }
+
+              &.active {
+                border-color: #9b59b6; // Neon Purple
+                color: #9b59b6;
+              }
+            }
           }
         }
       }
