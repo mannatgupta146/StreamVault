@@ -10,7 +10,7 @@
     h1 {
       font-size: 2.5rem;
       margin-bottom: 0.5rem;
-      background: linear-gradient(45deg, $accent-neon-blue, $accent-neon-purple);
+      background: linear-gradient(45deg, $admin-primary, $admin-secondary);
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -59,7 +59,7 @@
           outline: none;
 
           &:focus {
-            border-color: $accent-neon-blue;
+            border-color: $admin-primary;
           }
         }
 
@@ -81,7 +81,7 @@
           }
 
           .btn-submit {
-            background: $accent-neon-blue;
+            background: $admin-primary;
             color: $bg-color;
           }
 
@@ -110,7 +110,7 @@
             
             span {
               font-size: 0.8rem;
-              color: $accent-neon-purple;
+              color: $admin-secondary;
             }
           }
 
@@ -126,10 +126,10 @@
 
             .btn-edit {
               background: rgba(102, 252, 241, 0.2);
-              color: $accent-neon-blue;
+              color: $admin-primary;
               
               &:hover {
-                background: $accent-neon-blue;
+                background: $admin-primary;
                 color: $bg-color;
               }
             }
@@ -179,7 +179,7 @@
 
             &.admin {
               background: rgba(155, 89, 182, 0.2);
-              color: $accent-neon-purple;
+              color: $admin-secondary;
             }
             &.user {
               background: rgba(255, 255, 255, 0.1);

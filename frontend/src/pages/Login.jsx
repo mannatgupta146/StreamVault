@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { login, reset } from '../features/auth/authSlice';
+import AuthBackground from '../components/AuthBackground';
 import './Auth.scss';
 
 const Login = () => {
@@ -46,7 +47,9 @@ const Login = () => {
 
   return (
     <div className="auth-page fade-in">
-      <div className="auth-box">
+      <AuthBackground />
+      <div className="auth-form-wrapper">
+        <div className="auth-box">
         <h2>Sign In To StreamVault</h2>
         <form onSubmit={onSubmit}>
           <div className="form-group">
@@ -80,6 +83,7 @@ const Login = () => {
         <p className="auth-redirect">
           New to StreamVault? <a href="/register">Sign up now.</a>
         </p>
+        </div>
       </div>
     </div>
   );

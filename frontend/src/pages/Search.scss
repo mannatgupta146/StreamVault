@@ -28,7 +28,7 @@
         }
 
         &:focus {
-          border-color: $accent-neon-blue;
+          border-color: $accent-primary;
           box-shadow: 0 0 0 3px rgba(102, 252, 241, 0.12);
         }
       }
@@ -72,7 +72,7 @@
 
       &.active {
         background: rgba(102, 252, 241, 0.12);
-        color: $accent-neon-blue;
+        color: $accent-primary;
         border-color: rgba(102, 252, 241, 0.3);
       }
     }

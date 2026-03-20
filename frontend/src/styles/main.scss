@@ -2,8 +2,10 @@ $bg-color: #0b0c10;
 $card-bg: #1f2833;
 $text-primary: #ffffff;
 $text-secondary: #c5c6c7;
-$accent-neon-blue: #66fcf1;
-$accent-neon-purple: #9b59b6;
+$accent-primary: #FF0080;
+$accent-secondary: #FF8C00;
+$admin-primary: #E53935;
+$admin-secondary: #FF8A80;
 $border-color: rgba(255, 255, 255, 0.1);
 
 @mixin glassmorphism {

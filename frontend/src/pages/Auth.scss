@@ -1,13 +1,32 @@
 @use '../styles/main.scss' as *;
 
 .auth-page {
-  min-height: 100vh;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&q=80&w=1925');
-  background-size: cover;
-  background-position: center;
+  min-height: 100vh;
+  background-color: #0d0d12;
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .auth-form-wrapper {
+    flex: 3.5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    z-index: 2;
+    background-color: #050505;
+    box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+
+    @media (max-width: 768px) {
+      width: 100%;
+      background-color: transparent;
+      box-shadow: none;
+    }
+  }
 
   .auth-box {
     @include glassmorphism;
@@ -42,7 +61,7 @@
 
           &:focus {
             outline: none;
-            border-bottom: 2px solid $accent-neon-blue;
+            border-bottom: 2px solid $accent-primary;
           }
 
           &::placeholder {
@@ -52,7 +71,7 @@
       }
 
       .btn-auth {
-        background: linear-gradient(45deg, $accent-neon-blue, $accent-neon-purple);
+        background: linear-gradient(45deg, $accent-primary, $accent-secondary);
         color: $bg-color;
         padding: 1rem;
         font-size: 1.1rem;
@@ -63,6 +82,10 @@
 
         &:hover {
           opacity: 0.9;
+        }
+
+        &.btn-admin-auth {
+          background: linear-gradient(45deg, $admin-primary, $admin-secondary);
         }
       }
     }
@@ -85,6 +108,12 @@
     .auth-box {
       padding: 3rem 2rem;
       margin: 0 1rem;
+    }
+  }
+
+  &.admin-auth-page {
+    .form-group .form-control:focus {
+      border-bottom: 2px solid $admin-primary;
     }
   }
 }

@@ -1,0 +1,111 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Inter", "Roboto", sans-serif;
+  background-color: #0b0c10;
+  color: #ffffff;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.8)), url("https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&q=80&w=1925");
+  background-size: cover;
+  background-position: center;
+}
+.auth-page .auth-box {
+  background: rgba(11, 12, 16, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 4rem 4rem;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 450px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+}
+.auth-page .auth-box h2 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: #ffffff;
+}
+.auth-page .auth-box form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.auth-page .auth-box form .form-group {
+  width: 100%;
+}
+.auth-page .auth-box form .form-group .form-control {
+  width: 100%;
+  padding: 1rem;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.5);
+  color: #ffffff;
+  font-size: 1rem;
+}
+.auth-page .auth-box form .form-group .form-control:focus {
+  outline: none;
+  border-bottom: 2px solid #66fcf1;
+}
+.auth-page .auth-box form .form-group .form-control::-moz-placeholder {
+  color: #c5c6c7;
+}
+.auth-page .auth-box form .form-group .form-control::placeholder {
+  color: #c5c6c7;
+}
+.auth-page .auth-box form .btn-auth {
+  background: linear-gradient(45deg, #66fcf1, #9b59b6);
+  color: #0b0c10;
+  padding: 1rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 4px;
+  margin-top: 1rem;
+  transition: opacity 0.3s ease;
+}
+.auth-page .auth-box form .btn-auth:hover {
+  opacity: 0.9;
+}
+.auth-page .auth-box .auth-redirect {
+  margin-top: 1.5rem;
+  color: #c5c6c7;
+}
+.auth-page .auth-box .auth-redirect a {
+  color: #ffffff;
+  font-weight: 500;
+}
+.auth-page .auth-box .auth-redirect a:hover {
+  text-decoration: underline;
+}
+@media (max-width: 600px) {
+  .auth-page .auth-box {
+    padding: 3rem 2rem;
+    margin: 0 1rem;
+  }
+}/*# sourceMappingURL=Auth.css.map */

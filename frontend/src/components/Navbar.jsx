@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, NavLink, useNavigate } from "react-router-dom"
 import { Search, Bell, LogOut, LogIn, Film, Tv, User, Clock, Heart } from "lucide-react"
 import { useSelector, useDispatch } from "react-redux"
 import { logout, reset } from "../features/auth/authSlice"
@@ -103,57 +103,57 @@ const Navbar = () => {
         </Link>
         <ul className="navbar-links">
           <li className="nav-icon-link">
-            <Link to="/">
+            <NavLink to="/" end>
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M3 9l9-7 9 7" />
                 <path d="M9 22V12H15V22" />
               </svg>
               <span className="nav-label">Home</span>
-            </Link>
+            </NavLink>
           </li>
           <li className="nav-icon-link">
-            <Link to="/movies">
+            <NavLink to="/movies">
               <Film size={22} />
               <span className="nav-label">Movies</span>
-            </Link>
+            </NavLink>
           </li>
           <li className="nav-icon-link">
-            <Link to="/tv-shows">
+            <NavLink to="/tv-shows">
               <Tv size={22} />
               <span className="nav-label">TV</span>
-            </Link>
+            </NavLink>
           </li>
           <li className="nav-icon-link">
-            <Link to="/people">
+            <NavLink to="/people">
               <User size={22} />
               <span className="nav-label">People</span>
-            </Link>
+            </NavLink>
           </li>
           {user && (
             <>
               <li className="nav-icon-link">
-                <Link to="/library">
+                <NavLink to="/library">
                   <Heart size={22} />
                   <span className="nav-label">Library</span>
-                </Link>
+                </NavLink>
               </li>
               <li className="nav-icon-link">
-                <Link to="/watch-history">
+                <NavLink to="/watch-history">
                   <Clock size={22} />
                   <span className="nav-label">History</span>
-                </Link>
+                </NavLink>
               </li>
             </>
           )}
           {user && user.role === "admin" && (
             <li className="nav-icon-link">
-              <Link to="/admin">
+              <NavLink to="/admin">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="12" cy="7" r="4" />
                   <path d="M5.5 21h13a2 2 0 0 0 2-2v-2a7 7 0 0 0-14 0v2a2 2 0 0 0 2 2z" />
                 </svg>
                 <span className="nav-label">Admin</span>
-              </Link>
+              </NavLink>
             </li>
           )}
         </ul>
@@ -174,14 +174,14 @@ const Navbar = () => {
             &times;
           </button>
           <ul className="mobile-menu-links">
-            <li><Link to="/" onClick={() => setMobileMenuOpen(false)}>Home</Link></li>
-            <li><Link to="/movies" onClick={() => setMobileMenuOpen(false)}>Movies</Link></li>
-            <li><Link to="/tv-shows" onClick={() => setMobileMenuOpen(false)}>TV Shows</Link></li>
-            <li><Link to="/people" onClick={() => setMobileMenuOpen(false)}>People</Link></li>
-            {user && <li><Link to="/library" onClick={() => setMobileMenuOpen(false)}>Library</Link></li>}
-            {user && <li><Link to="/watch-history" onClick={() => setMobileMenuOpen(false)}>History</Link></li>}
+            <li><NavLink to="/" end onClick={() => setMobileMenuOpen(false)}>Home</NavLink></li>
+            <li><NavLink to="/movies" onClick={() => setMobileMenuOpen(false)}>Movies</NavLink></li>
+            <li><NavLink to="/tv-shows" onClick={() => setMobileMenuOpen(false)}>TV Shows</NavLink></li>
+            <li><NavLink to="/people" onClick={() => setMobileMenuOpen(false)}>People</NavLink></li>
+            {user && <li><NavLink to="/library" onClick={() => setMobileMenuOpen(false)}>Library</NavLink></li>}
+            {user && <li><NavLink to="/watch-history" onClick={() => setMobileMenuOpen(false)}>History</NavLink></li>}
             {user && user.role === "admin" && (
-              <li><Link to="/admin" onClick={() => setMobileMenuOpen(false)}>Admin</Link></li>
+              <li><NavLink to="/admin" onClick={() => setMobileMenuOpen(false)}>Admin</NavLink></li>
             )}
           </ul>
           <div className="mobile-menu-user">

@@ -61,7 +61,7 @@
           }
 
           .detail-genres {
-            color: $accent-neon-blue;
+            color: $accent-primary;
             font-size: 0.9rem;
           }
 
@@ -107,8 +107,8 @@
               }
 
               &.active {
-                border-color: $accent-neon-blue;
-                color: $accent-neon-blue;
+                border-color: $accent-primary;
+                color: $accent-primary;
               }
             }
 

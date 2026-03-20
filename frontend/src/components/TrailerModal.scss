@@ -36,7 +36,7 @@
       transition: all 0.3s ease;
 
       &:hover {
-        background: $accent-neon-purple;
+        background: $accent-secondary;
         transform: rotate(90deg);
       }
     }
@@ -72,7 +72,7 @@
           width: 36px;
           height: 36px;
           border: 3px solid rgba(255, 255, 255, 0.15);
-          border-top-color: $accent-neon-blue;
+          border-top-color: $accent-primary;
           border-radius: 50%;
           animation: spin 0.8s linear infinite;
         }

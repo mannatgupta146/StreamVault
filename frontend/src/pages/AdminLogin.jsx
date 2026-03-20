@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { login, logout, reset } from '../features/auth/authSlice';
 import { useNavigate } from 'react-router-dom';
+import AuthBackground from '../components/AuthBackground';
 import './Auth.scss';
 
 const AdminLogin = () => {
@@ -46,8 +47,10 @@ const AdminLogin = () => {
   if (isLoading) return <div className="page fade-in"><h1>Authenticating Admin...</h1></div>;
 
   return (
-    <div className="auth-page fade-in">
-      <div className="auth-box admin-auth-box" style={{ borderTop: "4px solid #e50914" }}>
+    <div className="auth-page admin-auth-page fade-in">
+      <AuthBackground />
+      <div className="auth-form-wrapper">
+        <div className="auth-box admin-auth-box" style={{ borderTop: "4px solid #e50914" }}>
         <h2 style={{ color: "white" }}>Admin Portal</h2>
         <p style={{ textAlign: "center", marginBottom: "2rem", color: "#999", fontSize: "0.9rem" }}>
           Restricted Access. Authorized Personnel Only.
@@ -77,10 +80,11 @@ const AdminLogin = () => {
               required
             />
           </div>
-          <button type="submit" className="btn btn-auth" style={{ background: "#e50914", fontWeight: "bold" }}>
+          <button type="submit" className="btn btn-auth btn-admin-auth">
             Access Dashboard
           </button>
         </form>
+        </div>
       </div>
     </div>
   );

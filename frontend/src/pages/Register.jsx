@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { register, reset } from '../features/auth/authSlice';
+import AuthBackground from '../components/AuthBackground';
 import './Auth.scss';
 
 const Register = () => {
@@ -43,7 +44,9 @@ const Register = () => {
 
   return (
     <div className="auth-page fade-in">
-      <div className="auth-box">
+      <AuthBackground />
+      <div className="auth-form-wrapper">
+        <div className="auth-box">
         <h2>Create Account</h2>
         <form onSubmit={onSubmit}>
           <div className="form-group">
@@ -90,6 +93,7 @@ const Register = () => {
         <p className="auth-redirect">
           Already have an account? <a href="/login">Sign In.</a>
         </p>
+        </div>
       </div>
     </div>
   );
