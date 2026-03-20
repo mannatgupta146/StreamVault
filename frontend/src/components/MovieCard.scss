@@ -133,10 +133,15 @@ $button-size: 34px;
         transform: scale(1.12);
       }
 
-      &.active,
-      &.liked {
+      &.active {
         background: $success-green;
         border-color: $success-green;
+        color: black;
+      }
+
+      &.liked {
+        background: #ffd600;
+        border-color: #ffd600;
         color: black;
       }
     }
